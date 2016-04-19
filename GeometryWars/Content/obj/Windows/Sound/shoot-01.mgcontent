@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/shoot-01.wav</SourceFile>
+  <SourceTime>2013-07-26T17:29:36-04:00</SourceTime>
+  <DestFile>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/bin/Windows/Sound/shoot-01.xnb</DestFile>
+  <DestTime>2016-04-18T20:25:53.8473392-04:00</DestTime>
+  <Importer>WavImporter</Importer>
+  <ImporterTime>2016-03-30T02:36:08-04:00</ImporterTime>
+  <Processor>SoundEffectProcessor</Processor>
+  <ProcessorTime>2016-03-30T02:36:08-04:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

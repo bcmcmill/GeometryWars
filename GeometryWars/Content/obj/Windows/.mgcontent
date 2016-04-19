@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Art/Black Hole.png</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Art/Bullet.png</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Art/Glow.png</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Art/Laser.png</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Art/Player.png</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Art/Pointer.png</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Art/Seeker.png</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Art/Wanderer.png</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/Music.mp3</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/explosion-01.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/explosion-02.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/explosion-03.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/explosion-04.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/explosion-05.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/explosion-06.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/explosion-07.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/explosion-08.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/shoot-01.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/shoot-02.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/shoot-03.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/shoot-04.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/spawn-01.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/spawn-02.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/spawn-03.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/spawn-04.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/spawn-05.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/spawn-06.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/spawn-07.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/spawn-08.wav</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Font.spritefont</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Shaders/BloomCombine.fx</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Shaders/BloomExtract.fx</File>
+    <File>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Shaders/GaussianBlur.fx</File>
+  </SourceFiles>
+</SourceFileCollection>
