@@ -43,7 +43,7 @@ namespace GeometryWars
 			if (Multiplier > 1)
 			{
 				// update the multiplier timer
-				if ((multiplierTimeLeft -= (float)GameRoot.GameTime.ElapsedGameTime.TotalSeconds) <= 0)
+				if ((multiplierTimeLeft -= (float)GeoWarsGame.GameTime.ElapsedGameTime.TotalSeconds) <= 0)
 				{
 					multiplierTimeLeft = multiplierExpiryTime;
 					ResetMultiplier();

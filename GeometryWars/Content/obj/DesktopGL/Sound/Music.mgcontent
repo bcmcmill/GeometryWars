@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Sound/Music.mp3</SourceFile>
-  <SourceTime>2013-07-26T17:29:36-04:00</SourceTime>
-  <DestFile>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/bin/DesktopGL/Sound/Music.xnb</DestFile>
-  <DestTime>2016-04-18T18:40:17.0249058-04:00</DestTime>
+  <SourceFile>D:/Users/brand.DESKTOP-TJQJ1IK/Source/Repos/GeometryWars/GeometryWars/Content/Sound/Music.mp3</SourceFile>
+  <SourceTime>2016-04-20T00:54:54.6130525-04:00</SourceTime>
+  <DestFile>D:/Users/brand.DESKTOP-TJQJ1IK/Source/Repos/GeometryWars/GeometryWars/Content/bin/DesktopGL/Sound/Music.xnb</DestFile>
+  <DestTime>2016-04-20T01:11:22.0792159-04:00</DestTime>
   <Importer>Mp3Importer</Importer>
   <ImporterTime>2016-03-30T02:36:08-04:00</ImporterTime>
   <Processor>SongProcessor</Processor>
@@ -15,6 +15,6 @@
   <Dependencies />
   <BuildAsset />
   <BuildOutput>
-    <string>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/bin/DesktopGL/Sound/Music.ogg</string>
+    <string>D:/Users/brand.DESKTOP-TJQJ1IK/Source/Repos/GeometryWars/GeometryWars/Content/bin/DesktopGL/Sound/Music.ogg</string>
   </BuildOutput>
 </PipelineBuildEvent>

@@ -25,7 +25,7 @@ namespace GeometryWars
 
 		public static Enemy CreateSeeker(Vector2 position)
 		{
-			var enemy = new Enemy(Art.Seeker, position);
+			var enemy = new Enemy(TextureLoader.Seeker, position);
 			enemy.AddBehaviour(enemy.FollowPlayer(0.9f));
 			enemy.PointValue = 2;
 
@@ -34,7 +34,7 @@ namespace GeometryWars
 
 		public static Enemy CreateWanderer(Vector2 position)
 		{
-			var enemy = new Enemy(Art.Wanderer, position);
+			var enemy = new Enemy(TextureLoader.Wanderer, position);
 			enemy.AddBehaviour(enemy.MoveRandomly());
 
 			return enemy;
@@ -51,7 +51,7 @@ namespace GeometryWars
 			}
 
 			Position += Velocity;
-			Position = Vector2.Clamp(Position, Size / 2, GameRoot.ScreenSize - Size / 2);
+			Position = Vector2.Clamp(Position, Size / 2, GeoWarsGame.ScreenSize - Size / 2);
 
 			Velocity *= 0.8f;
 		}
@@ -110,7 +110,7 @@ namespace GeometryWars
 				};
 
 				Color color = Color.Lerp(color1, color2, rand.NextFloat(0, 1));
-				GameRoot.ParticleManager.CreateParticle(Art.LineParticle, Position, color, 190, 1.5f, state);
+				GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.LineParticle, Position, color, 190, 1.5f, state);
 			}
 
 			Sound.Explosion.Play(0.5f, rand.NextFloat(-0.2f, 0.2f), 0);
@@ -145,12 +145,12 @@ namespace GeometryWars
 					Velocity += MathUtil.FromPolar(direction, 0.4f);
 					Orientation -= 0.05f;
 
-					var bounds = GameRoot.Viewport.Bounds;
+					var bounds = GeoWarsGame.Viewport.Bounds;
 					bounds.Inflate(-image.Width / 2 - 1, -image.Height / 2 - 1);
 
 					// if the enemy is outside the bounds, make it move away from the edge
 					if (!bounds.Contains(Position.ToPoint()))
-						direction = (GameRoot.ScreenSize / 2 - Position).ToAngle() + rand.NextFloat(-MathHelper.PiOver2, MathHelper.PiOver2);
+						direction = (GeoWarsGame.ScreenSize / 2 - Position).ToAngle() + rand.NextFloat(-MathHelper.PiOver2, MathHelper.PiOver2);
 
 					yield return 0;
 				}

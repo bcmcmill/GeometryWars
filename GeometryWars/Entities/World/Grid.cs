@@ -189,7 +189,7 @@ namespace GeometryWars
 
 		public void Draw(SpriteBatch spriteBatch)
 		{
-			screenSize = GameRoot.ScreenSize;
+			screenSize = GeoWarsGame.ScreenSize;
 
 			int width = points.GetLength(0);
 			int height = points.GetLength(1);

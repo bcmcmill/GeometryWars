@@ -33,7 +33,7 @@ namespace GeometryWars
 			Vector2 pos;
 			do
 			{
-				pos = new Vector2(rand.Next((int)GameRoot.ScreenSize.X), rand.Next((int)GameRoot.ScreenSize.Y));
+				pos = new Vector2(rand.Next((int)GeoWarsGame.ScreenSize.X), rand.Next((int)GeoWarsGame.ScreenSize.Y));
 			} 
 			while (Vector2.DistanceSquared(pos, PlayerShip.Instance.Position) < 250 * 250);
 

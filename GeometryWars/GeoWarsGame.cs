@@ -10,10 +10,10 @@ namespace GeometryWars
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class GameRoot : Microsoft.Xna.Framework.Game
+    public class GeoWarsGame : Microsoft.Xna.Framework.Game
 	{
 		// some helpful static properties
-		public static GameRoot Instance { get; private set; }
+		public static GeoWarsGame Instance { get; private set; }
 		public static Viewport Viewport { get { return Instance.GraphicsDevice.Viewport; } }
 		public static Vector2 ScreenSize { get { return new Vector2(Viewport.Width, Viewport.Height); } }
 		public static GameTime GameTime { get; private set; }
@@ -27,7 +27,7 @@ namespace GeometryWars
 		bool paused = false;
 		bool useBloom = true;
 
-		public GameRoot()
+		public GeoWarsGame()
 		{
 			Instance = this;
 			graphics = new GraphicsDeviceManager(this);
@@ -60,7 +60,7 @@ namespace GeometryWars
 		protected override void LoadContent()
 		{
 			spriteBatch = new SpriteBatch(GraphicsDevice);
-			Art.Load(Content);
+			TextureLoader.Load(Content);
 			Sound.Load(Content);
 		}
 
@@ -113,11 +113,11 @@ namespace GeometryWars
 			// Draw the user interface without bloom
 			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive);
 
-			spriteBatch.DrawString(Art.Font, "Lives: " + PlayerStatus.Lives, new Vector2(5), Color.White);
+			spriteBatch.DrawString(TextureLoader.Font, "Lives: " + PlayerStatus.Lives, new Vector2(5), Color.White);
 			DrawRightAlignedString("Score: " + PlayerStatus.Score, 5);
 			DrawRightAlignedString("Multiplier: " + PlayerStatus.Multiplier, 35);
 			// draw the custom mouse cursor
-			spriteBatch.Draw(Art.Pointer, Input.MousePosition, Color.White);
+			spriteBatch.Draw(TextureLoader.Pointer, Input.MousePosition, Color.White);
 
 			if (PlayerStatus.IsGameOver)
 			{
@@ -125,8 +125,8 @@ namespace GeometryWars
 					"Your Score: " + PlayerStatus.Score + "\n" +
 					"High Score: " + PlayerStatus.HighScore;
 
-				Vector2 textSize = Art.Font.MeasureString(text);
-				spriteBatch.DrawString(Art.Font, text, ScreenSize / 2 - textSize / 2, Color.White);
+				Vector2 textSize = TextureLoader.Font.MeasureString(text);
+				spriteBatch.DrawString(TextureLoader.Font, text, ScreenSize / 2 - textSize / 2, Color.White);
 			}
 
 			spriteBatch.End();
@@ -134,8 +134,8 @@ namespace GeometryWars
 
 		private void DrawRightAlignedString(string text, float y)
 		{
-			var textWidth = Art.Font.MeasureString(text).X;
-			spriteBatch.DrawString(Art.Font, text, new Vector2(ScreenSize.X - textWidth - 5, y), Color.White);
+			var textWidth = TextureLoader.Font.MeasureString(text).X;
+			spriteBatch.DrawString(TextureLoader.Font, text, new Vector2(ScreenSize.X - textWidth - 5, y), Color.White);
 		}
 	}
 }

@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace GeometryWars
 {
-    static class Art
+    static class TextureLoader
 	{
 		public static Texture2D Player { get; private set; }
 		public static Texture2D Seeker { get; private set; }

@@ -9,7 +9,7 @@ namespace GeometryWars
 
 		public Bullet(Vector2 position, Vector2 velocity)
 		{
-			image = Art.Bullet;
+			image = TextureLoader.Bullet;
 			Position = position;
 			Velocity = velocity;
 			Orientation = Velocity.ToAngle();
@@ -22,15 +22,15 @@ namespace GeometryWars
 				Orientation = Velocity.ToAngle();
 
 			Position += Velocity;
-			GameRoot.Grid.ApplyExplosiveForce(0.5f * Velocity.Length(), Position, 80);
+			GeoWarsGame.Grid.ApplyExplosiveForce(0.5f * Velocity.Length(), Position, 80);
 
 			// delete bullets that go off-screen
-			if (!GameRoot.Viewport.Bounds.Contains(Position.ToPoint()))
+			if (!GeoWarsGame.Viewport.Bounds.Contains(Position.ToPoint()))
 			{
 				IsExpired = true;
 
 				for (int i = 0; i < 30; i++)
-					GameRoot.ParticleManager.CreateParticle(Art.LineParticle, Position, Color.LightBlue, 50, 1,
+					GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.LineParticle, Position, Color.LightBlue, 50, 1,
 						new ParticleState() { Velocity = rand.NextVector2(0, 9), Type = ParticleType.Bullet, LengthMultiplier = 1 });
 
 			}

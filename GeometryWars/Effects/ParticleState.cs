@@ -55,8 +55,8 @@ namespace GeometryWars
 			particle.Orientation = vel.ToAngle();
 
 			var pos = particle.Position;
-			int width = (int)GameRoot.ScreenSize.X;
-			int height = (int)GameRoot.ScreenSize.Y;
+			int width = (int)GeoWarsGame.ScreenSize.X;
+			int height = (int)GeoWarsGame.ScreenSize.Y;
 
 			// collide with the edges of the screen
 			if (pos.X < 0)

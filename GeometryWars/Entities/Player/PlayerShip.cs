@@ -28,8 +28,8 @@ namespace GeometryWars
 
 		private PlayerShip()
 		{
-			image = Art.Player;
-			Position = GameRoot.ScreenSize / 2;
+			image = TextureLoader.Player;
+			Position = GeoWarsGame.ScreenSize / 2;
 			Radius = 10;
 		}
 
@@ -42,9 +42,9 @@ namespace GeometryWars
 					if (PlayerStatus.Lives == 0)
 					{
 						PlayerStatus.Reset();
-						Position = GameRoot.ScreenSize / 2;
+						Position = GeoWarsGame.ScreenSize / 2;
 					}
-					GameRoot.Grid.ApplyDirectedForce(new Vector3(0, 0, 5000), new Vector3(Position, 0), 50);
+					GeoWarsGame.Grid.ApplyDirectedForce(new Vector3(0, 0, 5000), new Vector3(Position, 0), 50);
 				}
 
 				return;
@@ -75,7 +75,7 @@ namespace GeometryWars
 			const float speed = 8;
 			Velocity += speed * Input.GetMovementDirection();
 			Position += Velocity;
-			Position = Vector2.Clamp(Position, Size / 2, GameRoot.ScreenSize - Size / 2);
+			Position = Vector2.Clamp(Position, Size / 2, GeoWarsGame.ScreenSize - Size / 2);
 
 			if (Velocity.LengthSquared() > 0)
 				Orientation = Velocity.ToAngle();
@@ -92,7 +92,7 @@ namespace GeometryWars
 				Orientation = Velocity.ToAngle();
 				Quaternion rot = Quaternion.CreateFromYawPitchRoll(0f, 0f, Orientation);
 
-				double t = GameRoot.GameTime.TotalGameTime.TotalSeconds;
+				double t = GeoWarsGame.GameTime.TotalGameTime.TotalSeconds;
 				// The primary velocity of the particles is 3 pixels/frame in the direction opposite to which the ship is travelling.
 				Vector2 baseVel = Velocity.ScaleTo(-3); 
 				// Calculate the sideways velocity for the two side streams. The direction is perpendicular to the ship's velocity and the
@@ -105,22 +105,22 @@ namespace GeometryWars
 
 				// middle particle stream
 				Vector2 velMid = baseVel + rand.NextVector2(0, 1);
-				GameRoot.ParticleManager.CreateParticle(Art.LineParticle, pos, Color.White * alpha, 60f, new Vector2(0.5f, 1),
+				GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.LineParticle, pos, Color.White * alpha, 60f, new Vector2(0.5f, 1),
 					new ParticleState(velMid, ParticleType.Enemy));
-				GameRoot.ParticleManager.CreateParticle(Art.Glow, pos, midColor * alpha, 60f, new Vector2(0.5f, 1),
+				GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.Glow, pos, midColor * alpha, 60f, new Vector2(0.5f, 1),
 					new ParticleState(velMid, ParticleType.Enemy));
 
 				// side particle streams
 				Vector2 vel1 = baseVel + perpVel + rand.NextVector2(0, 0.3f);
 				Vector2 vel2 = baseVel - perpVel + rand.NextVector2(0, 0.3f);
-				GameRoot.ParticleManager.CreateParticle(Art.LineParticle, pos, Color.White * alpha, 60f, new Vector2(0.5f, 1),
+				GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.LineParticle, pos, Color.White * alpha, 60f, new Vector2(0.5f, 1),
 					new ParticleState(vel1, ParticleType.Enemy));
-				GameRoot.ParticleManager.CreateParticle(Art.LineParticle, pos, Color.White * alpha, 60f, new Vector2(0.5f, 1),
+				GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.LineParticle, pos, Color.White * alpha, 60f, new Vector2(0.5f, 1),
 					new ParticleState(vel2, ParticleType.Enemy));
 
-				GameRoot.ParticleManager.CreateParticle(Art.Glow, pos, sideColor * alpha, 60f, new Vector2(0.5f, 1),
+				GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.Glow, pos, sideColor * alpha, 60f, new Vector2(0.5f, 1),
 					new ParticleState(vel1, ParticleType.Enemy));
-				GameRoot.ParticleManager.CreateParticle(Art.Glow, pos, sideColor * alpha, 60f, new Vector2(0.5f, 1),
+				GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.Glow, pos, sideColor * alpha, 60f, new Vector2(0.5f, 1),
 					new ParticleState(vel2, ParticleType.Enemy));
 			}
 		}
@@ -149,7 +149,7 @@ namespace GeometryWars
 					LengthMultiplier = 1
 				};
 
-				GameRoot.ParticleManager.CreateParticle(Art.LineParticle, Position, color, 190, 1.5f, state);
+				GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.LineParticle, Position, color, 190, 1.5f, state);
 			}
 		}
 	}

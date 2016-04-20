@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/Art/Player.png</SourceFile>
-  <SourceTime>2013-07-26T17:29:36-04:00</SourceTime>
-  <DestFile>D:/Users/brand.DESKTOP-TJQJ1IK/Desktop/GeometryWars/GeometryWars/Content/bin/DesktopGL/Art/Player.xnb</DestFile>
-  <DestTime>2016-04-18T18:40:12.6435374-04:00</DestTime>
+  <SourceFile>D:/Users/brand.DESKTOP-TJQJ1IK/Source/Repos/GeometryWars/GeometryWars/Content/Art/Player.png</SourceFile>
+  <SourceTime>2016-04-20T00:54:54.0492585-04:00</SourceTime>
+  <DestFile>D:/Users/brand.DESKTOP-TJQJ1IK/Source/Repos/GeometryWars/GeometryWars/Content/bin/DesktopGL/Art/Player.xnb</DestFile>
+  <DestTime>2016-04-20T01:11:17.6206602-04:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2016-03-30T02:36:08-04:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
