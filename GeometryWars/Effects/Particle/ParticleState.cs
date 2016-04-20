@@ -30,7 +30,7 @@ namespace GeometryWars
 			return state;
 		}
 
-		public static void UpdateParticle(ParticleManager<ParticleState>.Particle particle)
+		public static void UpdateParticle(Particle particle)
 		{
 			var vel = particle.State.Velocity;
 			float speed = vel.Length();

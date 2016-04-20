@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
 namespace GeometryWars
@@ -29,10 +30,11 @@ namespace GeometryWars
 			{
 				IsExpired = true;
 
-				for (int i = 0; i < 30; i++)
-					GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.LineParticle, Position, Color.LightBlue, 50, 1,
-						new ParticleState() { Velocity = rand.NextVector2(0, 9), Type = ParticleType.Bullet, LengthMultiplier = 1 });
-
+                Parallel.For(0, 30, 
+                    i => {
+                            GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.LineParticle, Position, Color.LightBlue, 50, 1,
+                            new ParticleState() { Velocity = rand.NextVector2(0, 9), Type = ParticleType.Bullet, LengthMultiplier = 1 });
+                         });
 			}
 		}
 	}

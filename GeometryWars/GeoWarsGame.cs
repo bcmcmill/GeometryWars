@@ -7,17 +7,13 @@ using BloomPostprocess;
 
 namespace GeometryWars
 {
-    /// <summary>
-    /// This is the main type for your game.
-    /// </summary>
     public class GeoWarsGame : Microsoft.Xna.Framework.Game
 	{
-		// some helpful static properties
 		public static GeoWarsGame Instance { get; private set; }
 		public static Viewport Viewport { get { return Instance.GraphicsDevice.Viewport; } }
 		public static Vector2 ScreenSize { get { return new Vector2(Viewport.Width, Viewport.Height); } }
 		public static GameTime GameTime { get; private set; }
-		public static ParticleManager<ParticleState> ParticleManager { get; private set; }
+		public static ParticleManager ParticleManager { get; private set; }
 		public static Grid Grid { get; private set; }
 
 		public GraphicsDeviceManager graphics;
@@ -33,11 +29,12 @@ namespace GeometryWars
 			graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
 
-			graphics.PreferredBackBufferWidth = 800;
-			graphics.PreferredBackBufferHeight = 600;
+			graphics.PreferredBackBufferWidth = 1440;
+			graphics.PreferredBackBufferHeight = 900;
 
+            // TODO: Fix Bloom Filter.
 			bloom = new BloomComponent(this);
-			//Components.Add(bloom);
+			// Components.Add(bloom);
 			bloom.Settings = new BloomSettings(null, 0.25f, 4, 2, 1, 1.5f, 1);
 		}
 
@@ -45,7 +42,7 @@ namespace GeometryWars
 		{
 			base.Initialize();
 
-			ParticleManager = new ParticleManager<ParticleState>(1024 * 20, ParticleState.UpdateParticle);
+			ParticleManager = new ParticleManager(1024 * 20, ParticleState.UpdateParticle);
 
 			const int maxGridPoints = 1600;
 			Vector2 gridSpacing = new Vector2((float)Math.Sqrt(Viewport.Width * Viewport.Height / maxGridPoints));

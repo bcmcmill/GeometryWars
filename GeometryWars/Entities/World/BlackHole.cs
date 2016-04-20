@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -26,7 +25,7 @@ namespace GeometryWars
 
             // Parallel ForEach to add effects of BlackHole to Bullets and Particles -- Example of Task Parallelism
             Parallel.ForEach(entities, 
-                (entity) => {
+                entity => {
                                 if (entity is Enemy && !(entity as Enemy).IsActive)
                                     return;
 
@@ -40,7 +39,7 @@ namespace GeometryWars
 
                                     entity.Velocity += dPos.ScaleTo(MathHelper.Lerp(2, 0, length / 250f));
                                 }
-                            }); // End Parallel.ForEach()
+                            }); // End Parallel ForEach
 
             // The black holes spray some orbiting particles. The spray toggles on and off every quarter second.
             if ((GeoWarsGame.GameTime.TotalGameTime.Milliseconds / 250) % 2 == 0)
@@ -96,7 +95,7 @@ namespace GeometryWars
                             };
 
                             GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.LineParticle, pos, color, 90, 1.5f, state);
-                         }); // End Parallel.For()
+                         }); // End Parallel For
 
 			Sound.Explosion.Play(0.5f, rand.NextFloat(-0.2f, 0.2f), 0);
 		}

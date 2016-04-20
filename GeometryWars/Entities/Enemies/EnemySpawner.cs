@@ -31,8 +31,11 @@ namespace GeometryWars
 		private static Vector2 GetSpawnPosition()
 		{
 			Vector2 pos;
-			do
-			{
+
+            // TODO:
+            // Needs parallization
+            do
+            {
 				pos = new Vector2(rand.Next((int)GeoWarsGame.ScreenSize.X), rand.Next((int)GeoWarsGame.ScreenSize.Y));
 			} 
 			while (Vector2.DistanceSquared(pos, PlayerShip.Instance.Position) < 250 * 250);

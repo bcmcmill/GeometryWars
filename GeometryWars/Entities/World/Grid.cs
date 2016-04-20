@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace GeometryWars
 {
@@ -97,6 +98,9 @@ namespace GeometryWars
 
 			// create the point masses
 			int column = 0, row = 0;
+
+            // TODO:
+            // Needs parallization
 			for (float y = size.Top; y <= size.Bottom; y += spacing.Y)
 			{
 				for (float x = size.Left; x <= size.Right; x += spacing.X)
@@ -109,23 +113,25 @@ namespace GeometryWars
 				column = 0;
 			}
 
-			// link the point masses with springs
-			for (int y = 0; y < numRows; y++)
-				for (int x = 0; x < numColumns; x++)
-				{
-					if (x == 0 || y == 0 || x == numColumns - 1 || y == numRows - 1)	// anchor the border of the grid
-						springList.Add(new Spring(fixedPoints[x, y], points[x, y], 0.1f, 0.1f));
-					else if (x % 3 == 0 && y % 3 == 0)									// loosely anchor 1/9th of the point masses
-						springList.Add(new Spring(fixedPoints[x, y], points[x, y], 0.002f, 0.02f));
+            // link the point masses with springs
+            Parallel.For(0, numRows, 
+                y => {
+                        Parallel.For(0, numColumns, 
+                            x => {
+                                    if (x == 0 || y == 0 || x == numColumns - 1 || y == numRows - 1)    // anchor the border of the grid
+                                        springList.Add(new Spring(fixedPoints[x, y], points[x, y], 0.1f, 0.1f));
+                                    else if (x % 3 == 0 && y % 3 == 0)                                  // loosely anchor 1/9th of the point masses
+                                        springList.Add(new Spring(fixedPoints[x, y], points[x, y], 0.002f, 0.02f));
 
-					const float stiffness = 0.28f;
-					const float damping = 0.06f;
+                                    const float stiffness = 0.28f;
+                                    const float damping = 0.06f;
 
-					if (x > 0)
-						springList.Add(new Spring(points[x - 1, y], points[x, y], stiffness, damping));
-					if (y > 0)
-						springList.Add(new Spring(points[x, y - 1], points[x, y], stiffness, damping));
-				}
+                                    if (x > 0)
+                                        springList.Add(new Spring(points[x - 1, y], points[x, y], stiffness, damping));
+                                    if (y > 0)
+                                        springList.Add(new Spring(points[x, y - 1], points[x, y], stiffness, damping));
+                                 }); // End Parallel For
+                     }); // End Parallel For
 
 			springs = springList.ToArray();
 		}
@@ -137,7 +143,9 @@ namespace GeometryWars
 
 		public void ApplyDirectedForce(Vector3 force, Vector3 position, float radius)
 		{
-			foreach (var mass in points)
+            // TODO:
+            // Needs parallization
+            foreach (var mass in points)
 				if (Vector3.DistanceSquared(position, mass.Position) < radius * radius)
 					mass.ApplyForce(10 * force / (10 + Vector3.Distance(position, mass.Position)));
 		}
@@ -149,7 +157,9 @@ namespace GeometryWars
 
 		public void ApplyImplosiveForce(float force, Vector3 position, float radius)
 		{
-			foreach (var mass in points)
+            // TODO:
+            // Needs parallization
+            foreach (var mass in points)
 			{
 				float dist2 = Vector3.DistanceSquared(position, mass.Position);
 				if (dist2 < radius * radius)
@@ -167,7 +177,9 @@ namespace GeometryWars
 
 		public void ApplyExplosiveForce(float force, Vector3 position, float radius)
 		{
-			foreach (var mass in points)
+            // TODO:
+            // Needs parallization
+            foreach (var mass in points)
 			{
 				float dist2 = Vector3.DistanceSquared(position, mass.Position);
 				if (dist2 < radius * radius)
@@ -180,10 +192,11 @@ namespace GeometryWars
 
 		public void Update()
 		{
-			foreach (var spring in springs)
-				spring.Update();
+            Parallel.ForEach(springs, spring => spring.Update());
 
-			foreach (var mass in points)
+            // TODO:
+            // Needs parallization
+            foreach (var mass in points)
 				mass.Update();
 		}
 
@@ -193,9 +206,11 @@ namespace GeometryWars
 
 			int width = points.GetLength(0);
 			int height = points.GetLength(1);
-			Color color = new Color(30, 30, 139, 85);	// dark blue
+			Color color = new Color(30, 30, 139, 85);   // dark blue
 
-			for (int y = 1; y < height; y++)
+            // TODO:
+            // Needs parallization
+            for (int y = 1; y < height; y++)
 			{
 				for (int x = 1; x < width; x++)
 				{

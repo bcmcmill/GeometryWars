@@ -65,6 +65,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Effects\Particle\CircularParticleArray.cs" />
+    <Compile Include="Effects\Particle\Particle.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GeoWarsGame.cs" />
@@ -82,8 +84,8 @@
     <Compile Include="Entities\EntityManager.cs" />
     <Compile Include="Entities\World\Grid.cs" />
     <Compile Include="Utilities\Input.cs" />
-    <Compile Include="Effects\ParticleManager.cs" />
-    <Compile Include="Effects\ParticleState.cs" />
+    <Compile Include="Effects\Particle\ParticleManager.cs" />
+    <Compile Include="Effects\Particle\ParticleState.cs" />
     <Compile Include="Entities\Player\PlayerShip.cs" />
     <Compile Include="Entities\Player\PlayerStatus.cs" />
     <Compile Include="Effects\Sound.cs" />

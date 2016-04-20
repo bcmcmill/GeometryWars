@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
@@ -136,21 +137,21 @@ namespace GeometryWars
 			PlayerStatus.RemoveLife();
 			framesUntilRespawn = PlayerStatus.IsGameOver ? 300 : 120;
 
-			Color explosionColor = new Color(0.8f, 0.8f, 0.4f);	// yellow
+			Color explosionColor = new Color(0.8f, 0.8f, 0.4f); // yellow
 
-			for (int i = 0; i < 1200; i++)
-			{
-				float speed = 18f * (1f - 1 / rand.NextFloat(1f, 10f));
-				Color color = Color.Lerp(Color.White, explosionColor, rand.NextFloat(0, 1));
-				var state = new ParticleState()
-				{
-					Velocity = rand.NextVector2(speed, speed),
-					Type = ParticleType.None,
-					LengthMultiplier = 1
-				};
+            Parallel.For(0, 1200, 
+                i => {
+                        float speed = 18f * (1f - 1 / rand.NextFloat(1f, 10f));
+                        Color color = Color.Lerp(Color.White, explosionColor, rand.NextFloat(0, 1));
+                        var state = new ParticleState()
+                        {
+                            Velocity = rand.NextVector2(speed, speed),
+                            Type = ParticleType.None,
+                            LengthMultiplier = 1
+                        };
 
-				GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.LineParticle, Position, color, 190, 1.5f, state);
-			}
+                        GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.LineParticle, Position, color, 190, 1.5f, state);
+                     });
 		}
 	}
 }

@@ -71,8 +71,8 @@ namespace GeometryWars
                                         enemies[i].HandleCollision(enemies[j]);
                                         enemies[j].HandleCollision(enemies[i]);
                                     }
-                                 });
-                     });
+                                 }); // End Parallel For
+                     }); // End Parallel For
 
             // handle collisions between bullets and enemies
             Parallel.For(0, enemies.Count,
@@ -84,8 +84,8 @@ namespace GeometryWars
                                         enemies[i].WasShot();
                                         bullets[j].IsExpired = true;
                                     }
-                                 });
-                     });
+                                 }); // End Parallel For
+                     }); // End Parallel For
 
             // handle collisions between the player and enemies
             Parallel.For(0, enemies.Count,
@@ -95,7 +95,7 @@ namespace GeometryWars
                             KillPlayer();
                             return;
                         }
-                     });
+                     }); // End Parallel For
 
             // handle collisions with black holes
             Parallel.For(0, blackHoles.Count, 
@@ -104,7 +104,7 @@ namespace GeometryWars
                             j => {
                                     if (enemies[j].IsActive && IsColliding(blackHoles[i], enemies[j]))
                                         enemies[j].WasShot();
-                                 });
+                                 }); // End Parallel For
 
                         Parallel.For(0, bullets.Count,
                             j => {
@@ -113,15 +113,15 @@ namespace GeometryWars
                                         bullets[j].IsExpired = true;
                                         blackHoles[i].WasShot();
                                     }
-                                 });
+                                 }); // End Parallel For
 
                         if (IsColliding(PlayerShip.Instance, blackHoles[i]))
                         {
                             KillPlayer();
                             return;
                         }
-                     });
-		}
+                     }); // End Parallel For
+        }
 
 		private static void KillPlayer()
 		{

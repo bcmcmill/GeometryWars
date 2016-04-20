@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,7 +10,7 @@ namespace GeometryWars
 	{
 		public static Random rand = new Random();
 
-		private List<IEnumerator<int>> behaviours = new List<IEnumerator<int>>();
+		private List<IEnumerator<int>> behaviors = new List<IEnumerator<int>>();
 		private int timeUntilStart = 60;
 		public bool IsActive { get { return timeUntilStart <= 0; } }
 		public int PointValue { get; private set; }
@@ -26,7 +27,7 @@ namespace GeometryWars
 		public static Enemy CreateSeeker(Vector2 position)
 		{
 			var enemy = new Enemy(TextureLoader.Seeker, position);
-			enemy.AddBehaviour(enemy.FollowPlayer(0.9f));
+			enemy.AddBehavior(enemy.FollowPlayer(0.9f));
 			enemy.PointValue = 2;
 
 			return enemy;
@@ -35,7 +36,7 @@ namespace GeometryWars
 		public static Enemy CreateWanderer(Vector2 position)
 		{
 			var enemy = new Enemy(TextureLoader.Wanderer, position);
-			enemy.AddBehaviour(enemy.MoveRandomly());
+			enemy.AddBehavior(enemy.MoveRandomly());
 
 			return enemy;
 		}
@@ -43,7 +44,7 @@ namespace GeometryWars
 		public override void Update()
 		{
 			if (timeUntilStart <= 0)
-				ApplyBehaviours();
+				ApplyBehaviors();
 			else
 			{
 				timeUntilStart--;
@@ -68,18 +69,18 @@ namespace GeometryWars
 			base.Draw(spriteBatch);
 		}
 
-		private void AddBehaviour(IEnumerable<int> behaviour)
+		private void AddBehavior(IEnumerable<int> behavior)
 		{
-			behaviours.Add(behaviour.GetEnumerator());
+			behaviors.Add(behavior.GetEnumerator());
 		}
 
-		private void ApplyBehaviours()
+		private void ApplyBehaviors()
 		{
-			for (int i = 0; i < behaviours.Count; i++)
-			{
-				if (!behaviours[i].MoveNext())
-					behaviours.RemoveAt(i--);
-			}
+            Parallel.For(0, behaviors.Count, 
+                i => {
+                        if (!behaviors[i].MoveNext())
+                            behaviors.RemoveAt(i--);
+                     });
 		}
 
 		public void HandleCollision(Enemy other)
@@ -99,24 +100,24 @@ namespace GeometryWars
 			Color color1 = ColorUtil.HSVToColor(hue1, 0.5f, 1);
 			Color color2 = ColorUtil.HSVToColor(hue2, 0.5f, 1);
 
-			for (int i = 0; i < 120; i++)
-			{
-				float speed = 18f * (1f - 1 / rand.NextFloat(1, 10));
-				var state = new ParticleState() 
-				{ 
-					Velocity = rand.NextVector2(speed, speed), 
-					Type = ParticleType.Enemy, 
-					LengthMultiplier = 1 
-				};
+            Parallel.For(0, 120, 
+                i => {
+                        float speed = 18f * (1f - 1 / rand.NextFloat(1, 10));
+                        var state = new ParticleState()
+                        {
+                            Velocity = rand.NextVector2(speed, speed),
+                            Type = ParticleType.Enemy,
+                            LengthMultiplier = 1
+                        };
 
-				Color color = Color.Lerp(color1, color2, rand.NextFloat(0, 1));
-				GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.LineParticle, Position, color, 190, 1.5f, state);
-			}
+                        Color color = Color.Lerp(color1, color2, rand.NextFloat(0, 1));
+                        GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.LineParticle, Position, color, 190, 1.5f, state);
+                    }); // End Parallel For
 
 			Sound.Explosion.Play(0.5f, rand.NextFloat(-0.2f, 0.2f), 0);
 		}
 
-		#region Behaviours
+		#region Behaviors
 		IEnumerable<int> FollowPlayer(float acceleration)
 		{
 			while (true)
