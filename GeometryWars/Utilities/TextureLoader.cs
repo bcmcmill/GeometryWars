@@ -21,15 +21,15 @@ namespace GeometryWars
 
 		public static void Load(ContentManager content)
 		{
-			Player = content.Load<Texture2D>("Art/Player");
-			Seeker = content.Load<Texture2D>("Art/Seeker");
-			Wanderer = content.Load<Texture2D>("Art/Wanderer");
-			Bullet = content.Load<Texture2D>("Art/Bullet");
-			Pointer = content.Load<Texture2D>("Art/Pointer");
-			BlackHole = content.Load<Texture2D>("Art/Black Hole");
+			Player = content.Load<Texture2D>("Textures/Player");
+			Seeker = content.Load<Texture2D>("Textures/Seeker");
+			Wanderer = content.Load<Texture2D>("Textures/Wanderer");
+			Bullet = content.Load<Texture2D>("Textures/Bullet");
+			Pointer = content.Load<Texture2D>("Textures/Pointer");
+			BlackHole = content.Load<Texture2D>("Textures/Black Hole");
 
-			LineParticle = content.Load<Texture2D>("Art/Laser");
-			Glow = content.Load<Texture2D>("Art/Glow");
+			LineParticle = content.Load<Texture2D>("Textures/Laser");
+			Glow = content.Load<Texture2D>("Textures/Glow");
 
 			Pixel = new Texture2D(Player.GraphicsDevice, 1, 1);
 			Pixel.SetData(new[] { Color.White });
