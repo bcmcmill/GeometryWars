@@ -24,22 +24,13 @@ namespace GeometryWars.Entities.World.Grid
 			// these fixed points will be used to anchor the grid to fixed positions on the screen
 			PointMass[,] fixedPoints = new PointMass[numColumns, numRows];
 
-			// create the point masses
-			int column = 0, row = 0;
 
-            // TODO:
-            // Needs parallization
-			for (float y = size.Top; y <= size.Bottom; y += spacing.Y)
-			{
-				for (float x = size.Left; x <= size.Right; x += spacing.X)
-				{
-					points[column, row] = new PointMass(new Vector3(x, y, 0), 1);
-					fixedPoints[column, row] = new PointMass(new Vector3(x, y, 0), 0);
-					column++;
-				}
-				row++;
-				column = 0;
-			}
+            Parallel.For(size.Top, numRows, i => {
+                 Parallel.For(size.Left, numColumns, j => {//for (x = size.Left; x <= size.Right; x += spacing.X)
+                      points[j, i] = new PointMass(new Vector3(j * spacing.X, i* spacing.Y, 0), 1);
+                      fixedPoints[j, i] = new PointMass(new Vector3(j * spacing.X, i * spacing.Y, 0), 0);
+                 });
+            });
 
             // link the point masses with springs
             for (int y = 0; y < numRows; y++)
