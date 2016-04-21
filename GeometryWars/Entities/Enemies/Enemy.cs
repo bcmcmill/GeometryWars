@@ -10,21 +10,21 @@ using GeometryWars.Entities.Player;
 
 namespace GeometryWars.Entities.Enemies
 {
-    class Enemy : Entity
+    internal class Enemy : Entity
 	{
-		public static Random rand = new Random();
+		public static Random Rand = new Random();
 
-		private List<IEnumerator<int>> behaviors = new List<IEnumerator<int>>();
-		private int timeUntilStart = 60;
-		public bool IsActive { get { return timeUntilStart <= 0; } }
-		public int PointValue { get; private set; }
+		private readonly List<IEnumerator<int>> _behaviors = new List<IEnumerator<int>>();
+		private int _timeUntilStart = 60;
+		public bool IsActive => _timeUntilStart <= 0;
+        public int PointValue { get; private set; }
 
 		public Enemy(Texture2D image, Vector2 position)
 		{
-			this.image = image;
+			this.Image = image;
 			Position = position;
 			Radius = image.Width / 2f;
-			color = Color.Transparent;
+			Color = Color.Transparent;
 			PointValue = 1;
 		}
 
@@ -47,12 +47,12 @@ namespace GeometryWars.Entities.Enemies
 
 		public override void Update()
 		{
-			if (timeUntilStart <= 0)
+			if (_timeUntilStart <= 0)
 				ApplyBehaviors();
 			else
 			{
-				timeUntilStart--;
-				color = Color.White * (1 - timeUntilStart / 60f);
+				_timeUntilStart--;
+				Color = Color.White * (1 - _timeUntilStart / 60f);
 			}
 
 			Position += Velocity;
@@ -63,11 +63,11 @@ namespace GeometryWars.Entities.Enemies
 
 		public override void Draw(SpriteBatch spriteBatch)
 		{
-			if (timeUntilStart > 0)
+			if (_timeUntilStart > 0)
 			{
 				// Draw an expanding, fading-out version of the sprite as part of the spawn-in effect.
-				float factor = timeUntilStart / 60f;	// decreases from 1 to 0 as the enemy spawns in
-				spriteBatch.Draw(image, Position, null, Color.White * factor, Orientation, Size / 2f, 2 - factor, 0, 0);
+				var factor = _timeUntilStart / 60f;	// decreases from 1 to 0 as the enemy spawns in
+				spriteBatch.Draw(Image, Position, null, Color.White * factor, Orientation, Size / 2f, 2 - factor, 0, 0);
 			}
 
 			base.Draw(spriteBatch);
@@ -75,15 +75,15 @@ namespace GeometryWars.Entities.Enemies
 
 		private void AddBehavior(IEnumerable<int> behavior)
 		{
-			behaviors.Add(behavior.GetEnumerator());
+			_behaviors.Add(behavior.GetEnumerator());
 		}
 
 		private void ApplyBehaviors()
 		{
-            Parallel.For(0, behaviors.Count, 
+            Parallel.For(0, _behaviors.Count, 
                 i => {
-                        if (!behaviors[i].MoveNext())
-                            behaviors.RemoveAt(i--);
+                        if (!_behaviors[i].MoveNext())
+                            _behaviors.RemoveAt(i);
                      });
 		}
 
@@ -99,29 +99,28 @@ namespace GeometryWars.Entities.Enemies
 			PlayerStatus.AddPoints(PointValue);
 			PlayerStatus.IncreaseMultiplier();
 
-			float hue1 = rand.NextFloat(0, 6);
-			float hue2 = (hue1 + rand.NextFloat(0, 2)) % 6f;
-			Color color1 = ColorUtil.HSVToColor(hue1, 0.5f, 1);
-			Color color2 = ColorUtil.HSVToColor(hue2, 0.5f, 1);
+			var hue1 = Rand.NextFloat(0, 6);
+			var hue2 = (hue1 + Rand.NextFloat(0, 2)) % 6f;
+			var color1 = ColorUtil.HsvToColor(hue1, 0.5f, 1);
+			var color2 = ColorUtil.HsvToColor(hue2, 0.5f, 1);
 
             Parallel.For(0, 120, 
                 i => {
-                        float speed = 18f * (1f - 1 / rand.NextFloat(1, 10));
+                        var speed = 18f * (1f - 1 / Rand.NextFloat(1, 10));
                         var state = new ParticleState()
                         {
-                            Velocity = rand.NextVector2(speed, speed),
+                            Velocity = Rand.NextVector2(speed, speed),
                             Type = ParticleType.Enemy,
                             LengthMultiplier = 1
                         };
 
-                        Color color = Color.Lerp(color1, color2, rand.NextFloat(0, 1));
+                        var color = Color.Lerp(color1, color2, Rand.NextFloat(0, 1));
                         GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.LineParticle, Position, color, 190, 1.5f, state);
                     }); // End Parallel For
 
-			Sound.Explosion.Play(0.5f, rand.NextFloat(-0.2f, 0.2f), 0);
+			Sound.Explosion.Play(0.5f, Rand.NextFloat(-0.2f, 0.2f), 0);
 		}
 
-		#region Behaviors
 		IEnumerable<int> FollowPlayer(float acceleration)
 		{
 			while (true)
@@ -138,29 +137,28 @@ namespace GeometryWars.Entities.Enemies
 
 		IEnumerable<int> MoveRandomly()
 		{
-			float direction = rand.NextFloat(0, MathHelper.TwoPi);
+			var direction = Rand.NextFloat(0, MathHelper.TwoPi);
 
 			while (true)
 			{
-				direction += rand.NextFloat(-0.1f, 0.1f);
+				direction += Rand.NextFloat(-0.1f, 0.1f);
 				direction = MathHelper.WrapAngle(direction);
 
-				for (int i = 0; i < 6; i++)
+				for (var i = 0; i < 6; i++)
 				{
 					Velocity += MathUtil.FromPolar(direction, 0.4f);
 					Orientation -= 0.05f;
 
 					var bounds = GeoWarsGame.Viewport.Bounds;
-					bounds.Inflate(-image.Width / 2 - 1, -image.Height / 2 - 1);
+					bounds.Inflate(-Image.Width / 2 - 1, -Image.Height / 2 - 1);
 
 					// if the enemy is outside the bounds, make it move away from the edge
 					if (!bounds.Contains(Position.ToPoint()))
-						direction = (GeoWarsGame.ScreenSize / 2 - Position).ToAngle() + rand.NextFloat(-MathHelper.PiOver2, MathHelper.PiOver2);
+						direction = (GeoWarsGame.ScreenSize / 2 - Position).ToAngle() + Rand.NextFloat(-MathHelper.PiOver2, MathHelper.PiOver2);
 
 					yield return 0;
 				}
 			}
 		}
-		#endregion
 	}
 }

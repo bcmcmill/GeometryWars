@@ -23,14 +23,14 @@ namespace GeometryWars
 	static class Program
     #endif
     {
-		private static GeoWarsGame game;
+		private static GeoWarsGame _game;
 
 		internal static void RunGame ()
 		{
-			game = new GeoWarsGame ();
-			game.Run ();
+			_game = new GeoWarsGame ();
+			_game.Run ();
 			#if !__IOS__  && !__TVOS__
-			game.Dispose ();
+			_game.Dispose ();
 			#endif
 		}
 

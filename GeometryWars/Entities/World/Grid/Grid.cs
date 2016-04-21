@@ -9,49 +9,49 @@ namespace GeometryWars.Entities.World.Grid
 {
     public class Grid
 	{
-		Spring[] springs;
-		PointMass[,] points;
-		Vector2 screenSize;
+		Spring[] _springs;
+		PointMass[,] _points;
+		Vector2 _screenSize;
 
 		public Grid(Rectangle size, Vector2 spacing)
 		{
 			var springList  = new List<Spring>();
 
-			int numColumns = (int)(size.Width / spacing.X) + 1;
-			int numRows = (int)(size.Height / spacing.Y) + 1;
-			points = new PointMass[numColumns, numRows];
+			var numColumns = (int)(size.Width / spacing.X) + 1;
+			var numRows = (int)(size.Height / spacing.Y) + 1;
+			_points = new PointMass[numColumns, numRows];
 
 			// these fixed points will be used to anchor the grid to fixed positions on the screen
-			PointMass[,] fixedPoints = new PointMass[numColumns, numRows];
+			var fixedPoints = new PointMass[numColumns, numRows];
 
 
             Parallel.For(size.Top, numRows, i => {
                  Parallel.For(size.Left, numColumns, j => {//for (x = size.Left; x <= size.Right; x += spacing.X)
-                      points[j, i] = new PointMass(new Vector3(j * spacing.X, i* spacing.Y, 0), 1);
+                      _points[j, i] = new PointMass(new Vector3(j * spacing.X, i* spacing.Y, 0), 1);
                       fixedPoints[j, i] = new PointMass(new Vector3(j * spacing.X, i * spacing.Y, 0), 0);
                  });
             });
 
             // link the point masses with springs
-            for (int y = 0; y < numRows; y++)
-                for (int x = 0; x < numColumns; x++)
+            for (var y = 0; y < numRows; y++)
+                for (var x = 0; x < numColumns; x++)
                 {
                     if (x == 0 || y == 0 || x == numColumns - 1 || y == numRows - 1)    // anchor the border of the grid
-                        springList.Add(new Spring(fixedPoints[x, y], points[x, y], 0.1f, 0.1f));
+                        springList.Add(new Spring(fixedPoints[x, y], _points[x, y], 0.1f, 0.1f));
                     else if (x % 3 == 0 && y % 3 == 0)                                  // loosely anchor 1/9th of the point masses
-                        springList.Add(new Spring(fixedPoints[x, y], points[x, y], 0.002f, 0.02f));
+                        springList.Add(new Spring(fixedPoints[x, y], _points[x, y], 0.002f, 0.02f));
 
                     const float stiffness = 0.28f;
                     const float damping = 0.06f;
 
                     if (x > 0)
-                        springList.Add(new Spring(points[x - 1, y], points[x, y], stiffness, damping));
+                        springList.Add(new Spring(_points[x - 1, y], _points[x, y], stiffness, damping));
                     if (y > 0)
-                        springList.Add(new Spring(points[x, y - 1], points[x, y], stiffness, damping));
+                        springList.Add(new Spring(_points[x, y - 1], _points[x, y], stiffness, damping));
 
                 }
 
-            springs = springList.ToArray();
+            _springs = springList.ToArray();
         }
 
 		public void ApplyDirectedForce(Vector2 force, Vector2 position, float radius)
@@ -63,7 +63,7 @@ namespace GeometryWars.Entities.World.Grid
 		{
             // TODO:
             // Needs parallization
-            foreach (var mass in points)
+            foreach (var mass in _points)
 				if (Vector3.DistanceSquared(position, mass.Position) < radius * radius)
 					mass.ApplyForce(10 * force / (10 + Vector3.Distance(position, mass.Position)));
 		}
@@ -77,9 +77,9 @@ namespace GeometryWars.Entities.World.Grid
 		{
             // TODO:
             // Needs parallization
-            foreach (var mass in points)
+            foreach (var mass in _points)
 			{
-				float dist2 = Vector3.DistanceSquared(position, mass.Position);
+				var dist2 = Vector3.DistanceSquared(position, mass.Position);
 				if (dist2 < radius * radius)
 				{
 					mass.ApplyForce(10 * force * (position - mass.Position) / (100 + dist2));
@@ -97,9 +97,9 @@ namespace GeometryWars.Entities.World.Grid
 		{
             // TODO:
             // Needs parallization
-            foreach (var mass in points)
+            foreach (var mass in _points)
 			{
-				float dist2 = Vector3.DistanceSquared(position, mass.Position);
+				var dist2 = Vector3.DistanceSquared(position, mass.Position);
 				if (dist2 < radius * radius)
 				{
 					mass.ApplyForce(100 * force * (mass.Position - position) / (10000 + dist2));
@@ -110,38 +110,38 @@ namespace GeometryWars.Entities.World.Grid
 
 		public void Update()
 		{
-            Parallel.ForEach(springs, spring => spring.Update());
+            Parallel.ForEach(_springs, spring => spring.Update());
 
             // TODO:
             // Needs parallization
-            foreach (var mass in points)
+            foreach (var mass in _points)
 				mass.Update();
 		}
 
 		public void Draw(SpriteBatch spriteBatch)
 		{
-			screenSize = GeoWarsGame.ScreenSize;
+			_screenSize = GeoWarsGame.ScreenSize;
 
-			int width = points.GetLength(0);
-			int height = points.GetLength(1);
-			Color color = new Color(30, 30, 139, 85);   // dark blue
+			var width = _points.GetLength(0);
+			var height = _points.GetLength(1);
+			var color = new Color(30, 30, 139, 85);   // dark blue
 
             // TODO:
             // Needs parallization
-            for (int y = 1; y < height; y++)
+            for (var y = 1; y < height; y++)
 			{
-				for (int x = 1; x < width; x++)
+				for (var x = 1; x < width; x++)
 				{
 					Vector2 left = new Vector2(), up = new Vector2();
-					Vector2 p = ToVec2(points[x, y].Position);
+					var p = ToVec2(_points[x, y].Position);
 					if (x > 1)
 					{
-						left = ToVec2(points[x - 1, y].Position);
-						float thickness = y % 3 == 1 ? 3f : 1f;
+						left = ToVec2(_points[x - 1, y].Position);
+						var thickness = y % 3 == 1 ? 3f : 1f;
 
 						// use Catmull-Rom interpolation to help smooth bends in the grid
-						int clampedX = Math.Min(x + 1, width - 1);
-						Vector2 mid = Vector2.CatmullRom(ToVec2(points[x - 2, y].Position), left, p, ToVec2(points[clampedX, y].Position), 0.5f);
+						var clampedX = Math.Min(x + 1, width - 1);
+						var mid = Vector2.CatmullRom(ToVec2(_points[x - 2, y].Position), left, p, ToVec2(_points[clampedX, y].Position), 0.5f);
 
 						// If the grid is very straight here, draw a single straight line. Otherwise, draw lines to our
 						// new interpolated midpoint
@@ -155,10 +155,10 @@ namespace GeometryWars.Entities.World.Grid
 					}
 					if (y > 1)
 					{
-						up = ToVec2(points[x, y - 1].Position);
-						float thickness = x % 3 == 1 ? 3f : 1f;
-						int clampedY = Math.Min(y + 1, height - 1);
-						Vector2 mid = Vector2.CatmullRom(ToVec2(points[x, y - 2].Position), up, p, ToVec2(points[x, clampedY].Position), 0.5f);
+						up = ToVec2(_points[x, y - 1].Position);
+						var thickness = x % 3 == 1 ? 3f : 1f;
+						var clampedY = Math.Min(y + 1, height - 1);
+						var mid = Vector2.CatmullRom(ToVec2(_points[x, y - 2].Position), up, p, ToVec2(_points[x, clampedY].Position), 0.5f);
 
 						if (Vector2.DistanceSquared(mid, (up + p) / 2) > 1)
 						{
@@ -173,7 +173,7 @@ namespace GeometryWars.Entities.World.Grid
 					// denser without the cost of simulating more springs and point masses.
 					if (x > 1 && y > 1)
 					{
-						Vector2 upLeft = ToVec2(points[x - 1, y - 1].Position);
+						var upLeft = ToVec2(_points[x - 1, y - 1].Position);
 						spriteBatch.DrawLine(0.5f * (upLeft + up), 0.5f * (left + p), color, 1f);	// vertical line
 						spriteBatch.DrawLine(0.5f * (upLeft + left), 0.5f * (up + p), color, 1f);	// horizontal line
 					}
@@ -184,8 +184,8 @@ namespace GeometryWars.Entities.World.Grid
 		public Vector2 ToVec2(Vector3 v)
 		{
 			// do a perspective projection
-			float factor = (v.Z + 2000) / 2000;
-			return (new Vector2(v.X, v.Y) - screenSize / 2f) * factor + screenSize / 2;
+			var factor = (v.Z + 2000) / 2000;
+			return (new Vector2(v.X, v.Y) - _screenSize / 2f) * factor + _screenSize / 2;
 		}
 	}
 }

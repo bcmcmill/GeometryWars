@@ -23,25 +23,25 @@ namespace GeometryWars
 		public static ParticleManager ParticleManager { get; private set; }
 		public static Grid Grid { get; private set; }
 
-		public GraphicsDeviceManager graphics;
-		SpriteBatch spriteBatch;
-		BloomComponent bloom;
+		public GraphicsDeviceManager Graphics;
+		SpriteBatch _spriteBatch;
+		BloomComponent _bloom;
 
-		bool paused = false;
-		bool useBloom = true;
+		bool _paused = false;
+		bool _useBloom = true;
 
 		public GeoWarsGame()
 		{
 			Instance = this;
-			graphics = new GraphicsDeviceManager(this);
+			Graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
 
-			graphics.PreferredBackBufferWidth = 1024;
-			graphics.PreferredBackBufferHeight = 768;
+			Graphics.PreferredBackBufferWidth = 1024;
+			Graphics.PreferredBackBufferHeight = 768;
 
-			bloom = new BloomComponent(this);
-			Components.Add(bloom);
-			bloom.Settings = new BloomSettings(null, 0.25f, 4, 2, 1, 1.5f, 1);
+			_bloom = new BloomComponent(this);
+			Components.Add(_bloom);
+			_bloom.Settings = new BloomSettings(null, 0.25f, 4, 2, 1, 1.5f, 1);
 		}
 
 		protected override void Initialize()
@@ -51,7 +51,7 @@ namespace GeometryWars
 			ParticleManager = new ParticleManager(1024 * 20, ParticleState.UpdateParticle);
 
 			const int maxGridPoints = 1600;
-			Vector2 gridSpacing = new Vector2((float)Math.Sqrt(Viewport.Width * Viewport.Height / maxGridPoints));
+			var gridSpacing = new Vector2((float)Math.Sqrt(Viewport.Width * Viewport.Height / maxGridPoints));
 			Grid = new Grid(Viewport.Bounds, gridSpacing);
 
 			EntityManager.Add(PlayerShip.Instance);
@@ -62,7 +62,7 @@ namespace GeometryWars
 
 		protected override void LoadContent()
 		{
-			spriteBatch = new SpriteBatch(GraphicsDevice);
+			_spriteBatch = new SpriteBatch(GraphicsDevice);
 			TextureLoader.Load(Content);
 			Sound.Load(Content);
 		}
@@ -77,11 +77,11 @@ namespace GeometryWars
                 Exit();
 
 			if (Input.WasKeyPressed(Keys.P))
-				paused = !paused;
+				_paused = !_paused;
 			if (Input.WasKeyPressed(Keys.B))
-				useBloom = !useBloom;
+				_useBloom = !_useBloom;
 
-			if (!paused)
+			if (!_paused)
 			{
 				PlayerStatus.Update();
 				EntityManager.Update();
@@ -95,50 +95,50 @@ namespace GeometryWars
 
 		protected override void Draw(GameTime gameTime)
 		{
-			bloom.BeginDraw();
-			if (!useBloom)
+			_bloom.BeginDraw();
+			if (!_useBloom)
 				base.Draw(gameTime);
 
 			GraphicsDevice.Clear(Color.TransparentBlack);
 
-			spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive);
-			EntityManager.Draw(spriteBatch);
-			spriteBatch.End();
+			_spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive);
+			EntityManager.Draw(_spriteBatch);
+			_spriteBatch.End();
 
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive);
-			Grid.Draw(spriteBatch);
-			ParticleManager.Draw(spriteBatch);
-			spriteBatch.End();
+			_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive);
+			Grid.Draw(_spriteBatch);
+			ParticleManager.Draw(_spriteBatch);
+			_spriteBatch.End();
 
-			if (useBloom)
+			if (_useBloom)
 				base.Draw(gameTime);
 
 			// Draw the user interface without bloom
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive);
+			_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive);
 
-			spriteBatch.DrawString(TextureLoader.Font, "Lives: " + PlayerStatus.Lives, new Vector2(5), Color.White);
+			_spriteBatch.DrawString(TextureLoader.Font, "Lives: " + PlayerStatus.Lives, new Vector2(5), Color.White);
 			DrawRightAlignedString("Score: " + PlayerStatus.Score, 5);
 			DrawRightAlignedString("Multiplier: " + PlayerStatus.Multiplier, 35);
 			// draw the custom mouse cursor
-			spriteBatch.Draw(TextureLoader.Pointer, Input.MousePosition, Color.White);
+			_spriteBatch.Draw(TextureLoader.Pointer, Input.MousePosition, Color.White);
 
 			if (PlayerStatus.IsGameOver)
 			{
-				string text = "Game Over\n" +
+				var text = "Game Over\n" +
 					"Your Score: " + PlayerStatus.Score + "\n" +
 					"High Score: " + PlayerStatus.HighScore;
 
-				Vector2 textSize = TextureLoader.Font.MeasureString(text);
-				spriteBatch.DrawString(TextureLoader.Font, text, ScreenSize / 2 - textSize / 2, Color.White);
+				var textSize = TextureLoader.Font.MeasureString(text);
+				_spriteBatch.DrawString(TextureLoader.Font, text, ScreenSize / 2 - textSize / 2, Color.White);
 			}
 
-			spriteBatch.End();
+			_spriteBatch.End();
 		}
 
 		private void DrawRightAlignedString(string text, float y)
 		{
 			var textWidth = TextureLoader.Font.MeasureString(text).X;
-			spriteBatch.DrawString(TextureLoader.Font, text, new Vector2(ScreenSize.X - textWidth - 5, y), Color.White);
+			_spriteBatch.DrawString(TextureLoader.Font, text, new Vector2(ScreenSize.X - textWidth - 5, y), Color.White);
 		}
 	}
 }

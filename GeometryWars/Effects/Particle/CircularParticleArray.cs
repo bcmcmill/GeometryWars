@@ -2,30 +2,32 @@
 {
     public class CircularParticleArray
     {
-        private Particle[] list;
-        private int start;
+        private readonly Particle[] _list;
+        private int _start;
 
         public int Start
         {
-            get { return start; }
-            set { start = value % list.Length; }
+            get { return _start; }
+            set { _start = value%_list.Length; }
         }
 
         public int Count { get; set; }
-        public int Capacity { get { return list.Length; } }
-        
+        public int Capacity => _list.Length;
 
-        public CircularParticleArray() { } 
+
+        public CircularParticleArray()
+        {
+        }
 
         public CircularParticleArray(int capacity)
         {
-            list = new Particle[capacity];
+            _list = new Particle[capacity];
         }
 
         public Particle this[int i]
         {
-            get { return list[(start + i) % list.Length]; }
-            set { list[(start + i) % list.Length] = value; }
+            get { return _list[(_start + i)%_list.Length]; }
+            set { _list[(_start + i)%_list.Length] = value; }
         }
     }
 }

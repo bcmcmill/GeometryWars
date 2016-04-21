@@ -1,86 +1,86 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using GeometryWars.Entities.Enemies;
+using GeometryWars.Entities.Player;
+using GeometryWars.Entities.World;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using GeometryWars.Entities.World;
-using GeometryWars.Entities.Player;
-using GeometryWars.Entities.Enemies;
-using System.Collections.Generic;
 
 namespace GeometryWars.Entities
 {
-    static class EntityManager
-	{
-		static List<Entity> entities = new List<Entity>();
-		static List<Enemy> enemies = new List<Enemy>();
-		static List<Bullet> bullets = new List<Bullet>();
-		static List<BlackHole> blackHoles = new List<BlackHole>();
+    internal static class EntityManager
+    {
+        public static List<Entity> Entities = new List<Entity>();
+        public static List<Enemy> Enemies = new List<Enemy>();
+        public static List<Bullet> Bullets = new List<Bullet>();
+        public static List<BlackHole> BlackHoles = new List<BlackHole>();
 
-		public static IEnumerable<BlackHole> BlackHoles { get { return blackHoles; } }
+        private static bool _isUpdating;
+        private static readonly List<Entity> AddedEntities = new List<Entity>();
 
-		static bool isUpdating;
-		static List<Entity> addedEntities = new List<Entity>();
+        public static int Count => Entities.Count;
+        public static int BlackHoleCount => BlackHoles.Count;
 
-		public static int Count { get { return entities.Count; } }
-		public static int BlackHoleCount { get { return blackHoles.Count; } }
-
-		public static void Add(Entity entity)
-		{
-			if (!isUpdating)
-				AddEntity(entity);
-			else
-				addedEntities.Add(entity);
-		}
-
-		private static void AddEntity(Entity entity)
-		{
-			entities.Add(entity);
-			if (entity is Bullet)
-				bullets.Add(entity as Bullet);
-			else if (entity is Enemy)
-				enemies.Add(entity as Enemy);
-			else if (entity is BlackHole)
-				blackHoles.Add(entity as BlackHole);
-		}
-
-		public static void Update()
-		{
-			isUpdating = true;
-			HandleCollisions();
-
-			Parallel.ForEach (entities, entity => entity.Update());
-
-			isUpdating = false;
-
-            Parallel.ForEach(addedEntities, entity => AddEntity(entity));
-
-			addedEntities.Clear();
-
-            entities = entities.AsParallel<Entity>().Where(x => !x.IsExpired).ToList();
-            bullets = bullets.AsParallel<Bullet>().Where(x => !x.IsExpired).ToList();
-            enemies = enemies.AsParallel<Enemy>().Where(x => !x.IsExpired).ToList();
-            blackHoles = blackHoles.Where(x => !x.IsExpired).ToList();
+        public static void Add(Entity entity)
+        {
+            if (!_isUpdating)
+                AddEntity(entity);
+            else
+                AddedEntities.Add(entity);
         }
 
-		static void HandleCollisions()
-		{
+        private static void AddEntity(Entity entity)
+        {
+            Entities.Add(entity);
+            if (entity is Bullet)
+                Bullets.Add((Bullet) entity);
+            else if (entity is Enemy)
+                Enemies.Add((Enemy) entity);
+            else if (entity is BlackHole)
+                BlackHoles.Add((BlackHole) entity);
+        }
+
+        public static void Update()
+        {
+            _isUpdating = true;
+            HandleCollisions();
+
+            Parallel.ForEach(Entities, entity => entity.Update());
+
+            _isUpdating = false;
+
+            Parallel.ForEach(AddedEntities, AddEntity);
+
+            AddedEntities.Clear();
+
+            Entities = Entities.AsParallel().Where(x => !x.IsExpired).ToList();
+            Bullets = Bullets.AsParallel().Where(x => !x.IsExpired).ToList();
+            Enemies = Enemies.AsParallel().Where(x => !x.IsExpired).ToList();
+            BlackHoles = BlackHoles.Where(x => !x.IsExpired).ToList();
+        }
+
+        private static void HandleCollisions()
+        {
             // handle collisions between enemies
-            Parallel.For(0, enemies.Count,
-                i => {
-                        for(int j = i + 1; j < enemies.Count; j++)
+            Parallel.For(0, Enemies.Count,
+                i =>
+                {
+                    for (var j = i + 1; j < Enemies.Count; j++)
+                    {
+                        if (IsColliding(Enemies[i], Enemies[j]))
                         {
-                            if (IsColliding(enemies[i], enemies[j]))
-                            {
-                                enemies[i].HandleCollision(enemies[j]);
-                                enemies[j].HandleCollision(enemies[i]);
-                            }
-                        } // end parallel for
-                     }); // end parallel for
+                            Enemies[i].HandleCollision(Enemies[j]);
+                            Enemies[j].HandleCollision(Enemies[i]);
+                        }
+                    } // end parallel for
+                }); // end parallel for
 
             // handle collisions between bullets and enemies
-            Parallel.ForEach<Enemy>(enemies,
-                enemy => {
-                    Parallel.ForEach<Bullet>(bullets,
+            Parallel.ForEach(Enemies,
+                enemy =>
+                {
+                    Parallel.ForEach(Bullets,
                         bullet =>
                         {
                             if (IsColliding(enemy, bullet))
@@ -89,67 +89,67 @@ namespace GeometryWars.Entities
                                 bullet.IsExpired = true;
                             }
                         }); // end parallel foreach
-                     }); // end parallel foreach
+                }); // end parallel foreach
 
             // handle collisions between the player and enemies
 
-            Parallel.ForEach(enemies, (enemy, loopState) => {
-                if(enemy.IsActive && IsColliding(PlayerShip.Instance, enemy))
+            Parallel.ForEach(Enemies, (enemy, loopState) =>
+            {
+                if (enemy.IsActive && IsColliding(PlayerShip.Instance, enemy))
                 {
                     KillPlayer();
                     loopState.Stop();
-                    return;
-                }           
+                }
             });
 
             // handle collisions with black holes
-            Parallel.For(0, blackHoles.Count, 
-                (i, loopState) => {
-                    for (int j = 0; j < enemies.Count; j++)
+            Parallel.For(0, BlackHoles.Count,
+                (i, loopState) =>
+                {
+                    foreach (var enemy in Enemies)
+                        if (enemy.IsActive && IsColliding(BlackHoles[i], enemy))
+                            enemy.WasShot();
 
-                        if (enemies[j].IsActive && IsColliding(blackHoles[i], enemies[j]))
-                            enemies[j].WasShot();
-
-                    for (int j = 0; j < bullets.Count; j++)
+                    foreach (var bullet in Bullets)
                     {
-                        if (IsColliding(blackHoles[i], bullets[j]))
-                        {
-                            bullets[j].IsExpired = true;
-                            blackHoles[i].WasShot();
-                        }
+                        if (!IsColliding(BlackHoles[i], bullet)) continue;
+                        bullet.IsExpired = true;
+                        BlackHoles[i].WasShot();
                     }
 
-                    if (IsColliding(PlayerShip.Instance, blackHoles[i]))
-                        {
-                            KillPlayer();
-                            loopState.Stop();
-                            return;
-                        }
-                     }); // end parallel for
+                    if (IsColliding(PlayerShip.Instance, BlackHoles[i]))
+                    {
+                        KillPlayer();
+                        loopState.Stop();
+                    }
+                }); // end parallel for
         }
 
-		private static void KillPlayer()
-		{
-			PlayerShip.Instance.Kill();
-            Parallel.ForEach(enemies, enemy => enemy.WasShot());
-            blackHoles.ForEach(x => x.Kill());
+        private static void KillPlayer()
+        {
+            PlayerShip.Instance.Kill();
+            Enemies.ForEach(enemy => enemy.WasShot());
+            BlackHoles.ForEach(blackHole => blackHole.Kill());
             EnemySpawner.Reset();
-		}
+        }
 
-		private static bool IsColliding(Entity a, Entity b)
-		{
-			float radius = a.Radius + b.Radius;
-			return !a.IsExpired && !b.IsExpired && Vector2.DistanceSquared(a.Position, b.Position) < radius * radius;
-		}
+        private static bool IsColliding(Entity a, Entity b)
+        {
+            var radius = a.Radius + b.Radius;
+            return !a.IsExpired && !b.IsExpired && Vector2.DistanceSquared(a.Position, b.Position) < radius*radius;
+        }
 
-		public static IEnumerable<Entity> GetNearbyEntities(Vector2 position, float radius)
-		{
-			return entities.AsParallel<Entity>().Where(x => Vector2.DistanceSquared(position, x.Position) < radius * radius);
-		}
+        public static List<Entity> GetNearbyEntities(Vector2 position, float radius)
+        {
+            return Entities.Where(x => Vector2.DistanceSquared(position, x.Position) < radius*radius).ToList();
+        }
 
-		public static void Draw(SpriteBatch spriteBatch)
-		{
-            Parallel.ForEach(entities, entity => entity.Draw(spriteBatch));
-		}
-	}
+        public static void Draw(SpriteBatch spriteBatch)
+        {
+            foreach (var entity in Entities)
+            {
+                entity.Draw(spriteBatch);
+            }
+        }
+    }
 }

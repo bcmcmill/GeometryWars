@@ -23,7 +23,7 @@ namespace GeometryWars.Entities.World.Grid
         {
             var x = End1.Position - End2.Position;
 
-            float length = x.Length();
+            var length = x.Length();
             // these springs can only pull, not push
             if (length <= TargetLength)
                 return;
