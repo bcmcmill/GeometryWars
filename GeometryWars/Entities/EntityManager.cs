@@ -91,18 +91,27 @@ namespace GeometryWars.Entities
                      }); // End Parallel For
 
             // handle collisions between the player and enemies
-            Parallel.For(0, enemies.Count,
-                i => {
-                        if (enemies[i].IsActive && IsColliding(PlayerShip.Instance, enemies[i]))
-                        {
-                            KillPlayer();
-                            return;
-                        }
-                     }); // End Parallel For
+            //Parallel.For(0, enemies.Count,
+            //    i => {
+            //            if (enemies[i].IsActive && IsColliding(PlayerShip.Instance, enemies[i]))
+            //            {
+            //                KillPlayer();
+            //                return;
+            //            }
+            //         }); // End Parallel For
+
+            Parallel.ForEach(enemies, (enemy, loopState) => {
+                if(enemy.IsActive && IsColliding(PlayerShip.Instance, enemy))
+                {
+                    KillPlayer();
+                    loopState.Stop();
+                    return;
+                }           
+            });
 
             // handle collisions with black holes
             Parallel.For(0, blackHoles.Count, 
-                i => {
+                (i, loopState) => {
                         Parallel.For(0, enemies.Count, 
                             j => {
                                     if (enemies[j].IsActive && IsColliding(blackHoles[i], enemies[j]))
@@ -121,6 +130,7 @@ namespace GeometryWars.Entities
                         if (IsColliding(PlayerShip.Instance, blackHoles[i]))
                         {
                             KillPlayer();
+                            loopState.Stop();
                             return;
                         }
                      }); // End Parallel For
