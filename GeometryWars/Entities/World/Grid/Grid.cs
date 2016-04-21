@@ -30,7 +30,6 @@ namespace GeometryWars.Entities.World.Grid
             {
                 Parallel.For(size.Left, numColumns, j =>
                 {
-//for (x = size.Left; x <= size.Right; x += spacing.X)
                     _points[j, i] = new PointMass(new Vector3(j*spacing.X, i*spacing.Y, 0), 1);
                     fixedPoints[j, i] = new PointMass(new Vector3(j*spacing.X, i*spacing.Y, 0), 0);
                 });
