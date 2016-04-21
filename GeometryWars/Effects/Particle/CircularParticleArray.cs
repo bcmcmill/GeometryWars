@@ -1,10 +1,10 @@
 ﻿namespace GeometryWars.Effects.Particle
 {
-    // Represents a circular array with an arbitrary starting point. It's useful for efficiently overwriting
-    // the oldest particles when the array gets full. Simply overwrite particleList[0] and advance Start.
     public class CircularParticleArray
     {
+        private Particle[] list;
         private int start;
+
         public int Start
         {
             get { return start; }
@@ -13,9 +13,9 @@
 
         public int Count { get; set; }
         public int Capacity { get { return list.Length; } }
-        private Particle[] list;
+        
 
-        public CircularParticleArray() { }  // for serialization
+        public CircularParticleArray() { } 
 
         public CircularParticleArray(int capacity)
         {
