@@ -10,14 +10,12 @@
 #region Using Statements
 using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System.IO;
 #endregion
 
 namespace GeometryWars.Effects.Bloom
 {
-	public class BloomComponent : DrawableGameComponent
+    public class BloomComponent : DrawableGameComponent
 	{
 		#region Fields
 
@@ -186,9 +184,9 @@ namespace GeometryWars.Effects.Bloom
 			parameters["BloomSaturation"].SetValue(Settings.BloomSaturation);
 			parameters["BaseSaturation"].SetValue(Settings.BaseSaturation);
 
-			GraphicsDevice.Textures[1] = sceneRenderTarget;
+            bloomCombineEffect.Parameters["BaseTexture"].SetValue(sceneRenderTarget);
 
-			Viewport viewport = GraphicsDevice.Viewport;
+            Viewport viewport = GraphicsDevice.Viewport;
 
 			DrawFullscreenQuad(renderTarget1,
 				viewport.Width, viewport.Height,
@@ -226,8 +224,8 @@ namespace GeometryWars.Effects.Bloom
 			{
 				effect = null;
 			}
-
-			spriteBatch.Begin(0, BlendState.Opaque, null, null, null, effect);
+            GraphicsDevice.Clear(Color.TransparentBlack);
+			spriteBatch.Begin(0, BlendState.AlphaBlend, null, null, null, effect);
 			spriteBatch.Draw(texture, new Rectangle(0, 0, width, height), Color.White);
 			spriteBatch.End();
 		}
