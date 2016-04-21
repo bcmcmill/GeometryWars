@@ -26,7 +26,7 @@ namespace GeometryWars.Utilities
 			Wanderer = content.Load<Texture2D>("Textures/Wanderer");
 			Bullet = content.Load<Texture2D>("Textures/Bullet");
 			Pointer = content.Load<Texture2D>("Textures/Pointer");
-			BlackHole = content.Load<Texture2D>("Textures/BlackHole");
+			BlackHole = content.Load<Texture2D>("Textures/BlackHole2");
 
 			LineParticle = content.Load<Texture2D>("Textures/Laser");
 			Glow = content.Load<Texture2D>("Textures/Glow");
