@@ -114,27 +114,26 @@ namespace GeometryWars
 			}
 
             // link the point masses with springs
-            Parallel.For(0, numRows, 
-                y => {
-                        Parallel.For(0, numColumns, 
-                            x => {
-                                    if (x == 0 || y == 0 || x == numColumns - 1 || y == numRows - 1)    // anchor the border of the grid
-                                        springList.Add(new Spring(fixedPoints[x, y], points[x, y], 0.1f, 0.1f));
-                                    else if (x % 3 == 0 && y % 3 == 0)                                  // loosely anchor 1/9th of the point masses
-                                        springList.Add(new Spring(fixedPoints[x, y], points[x, y], 0.002f, 0.02f));
+            for (int y = 0; y < numRows; y++)
+                for (int x = 0; x < numColumns; x++)
+                {
+                    if (x == 0 || y == 0 || x == numColumns - 1 || y == numRows - 1)    // anchor the border of the grid
+                        springList.Add(new Spring(fixedPoints[x, y], points[x, y], 0.1f, 0.1f));
+                    else if (x % 3 == 0 && y % 3 == 0)                                  // loosely anchor 1/9th of the point masses
+                        springList.Add(new Spring(fixedPoints[x, y], points[x, y], 0.002f, 0.02f));
 
-                                    const float stiffness = 0.28f;
-                                    const float damping = 0.06f;
+                    const float stiffness = 0.28f;
+                    const float damping = 0.06f;
 
-                                    if (x > 0)
-                                        springList.Add(new Spring(points[x - 1, y], points[x, y], stiffness, damping));
-                                    if (y > 0)
-                                        springList.Add(new Spring(points[x, y - 1], points[x, y], stiffness, damping));
-                                 }); // End Parallel For
-                     }); // End Parallel For
+                    if (x > 0)
+                        springList.Add(new Spring(points[x - 1, y], points[x, y], stiffness, damping));
+                    if (y > 0)
+                        springList.Add(new Spring(points[x, y - 1], points[x, y], stiffness, damping));
 
-			springs = springList.ToArray();
-		}
+                }
+
+            springs = springList.ToArray();
+        }
 
 		public void ApplyDirectedForce(Vector2 force, Vector2 position, float radius)
 		{
