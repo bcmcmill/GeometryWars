@@ -16,18 +16,18 @@ namespace GeometryWars.Utilities
             if (Math.Abs(chroma) < Tolerance)
                 return new Vector3(0, 0, v);
 
-            var s = chroma / v;
+            var s = chroma/v;
 
             if (c.X >= c.Y && c.Y >= c.Z)
             {
-                var h = (c.Y - c.Z) / chroma;
+                var h = (c.Y - c.Z)/chroma;
                 if (h < 0)
                     h += 6;
                 return new Vector3(h, s, v);
             }
             if (c.Y >= c.Z && c.Y >= c.X)
-                return new Vector3((c.Z - c.X) / chroma + 2, s, v);
-            return new Vector3((c.X - c.Y) / chroma + 4, s, v);
+                return new Vector3((c.Z - c.X)/chroma + 2, s, v);
+            return new Vector3((c.X - c.Y)/chroma + 4, s, v);
         }
 
         public static Color HsvToColor(Vector3 hsv)
@@ -40,8 +40,8 @@ namespace GeometryWars.Utilities
             if (Math.Abs(h) < Tolerance && Math.Abs(s) < Tolerance)
                 return new Color(v, v, v);
 
-            var c = s * v;
-            var x = c * (1 - Math.Abs(h % 2 - 1));
+            var c = s*v;
+            var x = c*(1 - Math.Abs(h%2 - 1));
             var m = v - c;
 
             if (h < 1) return new Color(c + m, x + m, m);

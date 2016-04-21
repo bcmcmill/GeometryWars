@@ -7,9 +7,9 @@ namespace GeometryWars.Entities.Enemies
 {
     internal static class EnemySpawner
     {
+        private const float InverseBlackHoleChance = 600;
         private static readonly Random Rand = new Random();
         private static float _inverseSpawnChance = 90;
-        private const float InverseBlackHoleChance = 600;
 
         public static void Update()
         {

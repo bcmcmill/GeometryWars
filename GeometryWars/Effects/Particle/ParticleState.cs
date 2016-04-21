@@ -99,7 +99,7 @@ namespace GeometryWars.Effects.Particle
                 vel *= 0.94f;
             else
                 vel *= 0.96f + Math.Abs(pos.X)%0.04f;
-                    // rand.Next() isn't thread-safe, so use the position for pseudo-randomness
+            // rand.Next() isn't thread-safe, so use the position for pseudo-randomness
 
             particle.State.Velocity = vel;
         }

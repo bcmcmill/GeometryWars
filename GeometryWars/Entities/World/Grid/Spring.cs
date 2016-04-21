@@ -2,7 +2,7 @@
 
 namespace GeometryWars.Entities.World.Grid
 {
-    struct Spring
+    internal struct Spring
     {
         public PointMass End1;
         public PointMass End2;
@@ -16,7 +16,7 @@ namespace GeometryWars.Entities.World.Grid
             End2 = end2;
             Stiffness = stiffness;
             Damping = damping;
-            TargetLength = Vector3.Distance(end1.Position, end2.Position) * 0.95f;
+            TargetLength = Vector3.Distance(end1.Position, end2.Position)*0.95f;
         }
 
         public void Update()
@@ -28,9 +28,9 @@ namespace GeometryWars.Entities.World.Grid
             if (length <= TargetLength)
                 return;
 
-            x = (x / length) * (length - TargetLength);
+            x = x/length*(length - TargetLength);
             var dv = End2.Velocity - End1.Velocity;
-            var force = Stiffness * x - dv * Damping;
+            var force = Stiffness*x - dv*Damping;
 
             End1.ApplyForce(-force);
             End2.ApplyForce(force);

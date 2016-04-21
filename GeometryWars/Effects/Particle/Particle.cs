@@ -5,15 +5,15 @@ namespace GeometryWars.Effects.Particle
 {
     public class Particle
     {
-        public Texture2D Texture;
-        public Vector2 Position;
+        public float Duration;
         public float Orientation;
+        public float PercentLife = 1.0f;
+        public Vector2 Position;
 
         public Vector2 Scale = Vector2.One;
+        public ParticleState State;
+        public Texture2D Texture;
 
         public Color Tint;
-        public float Duration;
-        public float PercentLife = 1.0f;
-        public ParticleState State;
     }
 }

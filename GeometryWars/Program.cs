@@ -11,34 +11,34 @@ using UIKit;
 
 namespace GeometryWars
 {
-	#if __IOS__ || __TVOS__
+#if __IOS__ || __TVOS__
     [Register("AppDelegate")]
     class Program : UIApplicationDelegate
     
 #else
     internal static class Program
-    #endif
+#endif
     {
-		private static GeoWarsGame _game;
+        private static GeoWarsGame _game;
 
-		internal static void RunGame ()
-		{
-			_game = new GeoWarsGame ();
-			_game.Run ();
-			#if !__IOS__  && !__TVOS__
-			_game.Dispose ();
-			#endif
-		}
+        internal static void RunGame()
+        {
+            _game = new GeoWarsGame();
+            _game.Run();
+#if !__IOS__  && !__TVOS__
+            _game.Dispose();
+#endif
+        }
 
-		/// <summary>
-		/// The main entry point for the application.
-		/// </summary>
-		#if !MONOMAC && !__IOS__  && !__TVOS__
+        /// <summary>
+        ///     The main entry point for the application.
+        /// </summary>
+#if !MONOMAC && !__IOS__  && !__TVOS__
         [STAThread]
-		#endif
-        static void Main (string[] args)
-		{
-			#if MONOMAC
+#endif
+        private static void Main(string[] args)
+        {
+#if MONOMAC
             NSApplication.Init ();
 
             using (var p = new NSAutoreleasePool ()) {
@@ -48,19 +48,19 @@ namespace GeometryWars
 			#elif __IOS__ || __TVOS__
             UIApplication.Main(args, null, "AppDelegate");
 			#else
-			RunGame ();
-			#endif
-		}
+            RunGame();
+#endif
+        }
 
-		#if __IOS__ || __TVOS__
+#if __IOS__ || __TVOS__
         public override void FinishedLaunching(UIApplication app)
         {
             RunGame();
         }
         #endif
-	}
+    }
 
-	#if MONOMAC
+#if MONOMAC
     class AppDelegate : NSApplicationDelegate
     {
         public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
@@ -81,4 +81,3 @@ namespace GeometryWars
     }  
     #endif
 }
-
