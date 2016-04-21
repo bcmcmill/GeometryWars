@@ -1,7 +1,4 @@
-﻿#region Using Statements
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 
 #if MONOMAC
 using MonoMac.AppKit;
@@ -11,7 +8,6 @@ using MonoMac.Foundation;
 using Foundation;
 using UIKit;
 #endif
-#endregion
 
 namespace GeometryWars
 {
@@ -20,7 +16,7 @@ namespace GeometryWars
     class Program : UIApplicationDelegate
     
 #else
-	static class Program
+    internal static class Program
     #endif
     {
 		private static GeoWarsGame _game;

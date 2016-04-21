@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GeometryWars.Effects;
+using GeometryWars.Effects.Particle;
+using GeometryWars.Entities.Player;
+using GeometryWars.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using GeometryWars.Effects.Particle;
-using GeometryWars.Utilities;
-using GeometryWars.Effects;
-using GeometryWars.Entities.Player;
 
 namespace GeometryWars.Entities.Enemies
 {
@@ -107,7 +107,7 @@ namespace GeometryWars.Entities.Enemies
             Parallel.For(0, 120, 
                 i => {
                         var speed = 18f * (1f - 1 / Rand.NextFloat(1, 10));
-                        var state = new ParticleState()
+                        var state = new ParticleState
                         {
                             Velocity = Rand.NextVector2(speed, speed),
                             Type = ParticleType.Enemy,

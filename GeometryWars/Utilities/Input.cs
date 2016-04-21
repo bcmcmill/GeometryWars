@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework;
 using GeometryWars.Entities.Player;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace GeometryWars.Utilities
 {
@@ -11,7 +11,7 @@ namespace GeometryWars.Utilities
 		private static MouseState _mouseState, _lastMouseState;
 		private static GamePadState _gamepadState, _lastGamepadState;
 
-		private static bool _isAimingWithMouse = false;
+		private static bool _isAimingWithMouse;
 
 		public static Vector2 MousePosition => new Vector2(_mouseState.X, _mouseState.Y);
 

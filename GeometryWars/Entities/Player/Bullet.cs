@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
 using GeometryWars.Effects.Particle;
 using GeometryWars.Utilities;
+using Microsoft.Xna.Framework;
 
 namespace GeometryWars.Entities.Player
 {
@@ -35,7 +35,7 @@ namespace GeometryWars.Entities.Player
                 Parallel.For(0, 30, 
                     i => {
                             GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.LineParticle, Position, Color.LightBlue, 50, 1,
-                            new ParticleState() { Velocity = Rand.NextVector2(0, 9), Type = ParticleType.Bullet, LengthMultiplier = 1 });
+                            new ParticleState { Velocity = Rand.NextVector2(0, 9), Type = ParticleType.Bullet, LengthMultiplier = 1 });
                          });
 			}
 		}

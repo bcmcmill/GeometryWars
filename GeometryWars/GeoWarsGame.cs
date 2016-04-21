@@ -1,16 +1,16 @@
 ﻿using System;
+using GeometryWars.Effects;
+using GeometryWars.Effects.Bloom;
+using GeometryWars.Effects.Particle;
+using GeometryWars.Entities;
+using GeometryWars.Entities.Enemies;
+using GeometryWars.Entities.Player;
+using GeometryWars.Entities.World.Grid;
+using GeometryWars.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using GeometryWars.Effects.Particle;
-using GeometryWars.Entities.World.Grid;
-using GeometryWars.Effects.Bloom;
-using GeometryWars.Entities;
-using GeometryWars.Entities.Player;
-using GeometryWars.Effects;
-using GeometryWars.Utilities;
-using GeometryWars.Entities.Enemies;
 
 namespace GeometryWars
 {
@@ -24,11 +24,11 @@ namespace GeometryWars
 		public static Grid Grid { get; private set; }
 
 		public GraphicsDeviceManager Graphics;
-		SpriteBatch _spriteBatch;
-		BloomComponent _bloom;
+        private SpriteBatch _spriteBatch;
+        private readonly BloomComponent _bloom;
 
-		bool _paused = false;
-		bool _useBloom = true;
+        private bool _paused;
+        private bool _useBloom = true;
 
 		public GeoWarsGame()
 		{

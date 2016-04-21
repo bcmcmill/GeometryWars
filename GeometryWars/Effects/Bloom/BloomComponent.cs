@@ -27,7 +27,7 @@ namespace GeometryWars.Effects.Bloom
 			PreBloom,
 			BlurredHorizontally,
 			BlurredBothWays,
-			FinalResult,
+			FinalResult
 		}
 
 		public IntermediateBuffer ShowBuffer

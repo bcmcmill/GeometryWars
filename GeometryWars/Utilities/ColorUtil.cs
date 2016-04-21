@@ -25,10 +25,9 @@ namespace GeometryWars.Utilities
                     h += 6;
                 return new Vector3(h, s, v);
             }
-            else if (c.Y >= c.Z && c.Y >= c.X)
+            if (c.Y >= c.Z && c.Y >= c.X)
                 return new Vector3((c.Z - c.X) / chroma + 2, s, v);
-            else
-                return new Vector3((c.X - c.Y) / chroma + 4, s, v);
+            return new Vector3((c.X - c.Y) / chroma + 4, s, v);
         }
 
         public static Color HsvToColor(Vector3 hsv)
@@ -46,11 +45,11 @@ namespace GeometryWars.Utilities
             var m = v - c;
 
             if (h < 1) return new Color(c + m, x + m, m);
-            else if (h < 2) return new Color(x + m, c + m, m);
-            else if (h < 3) return new Color(m, c + m, x + m);
-            else if (h < 4) return new Color(m, x + m, c + m);
-            else if (h < 5) return new Color(x + m, m, c + m);
-            else return new Color(c + m, m, x + m);
+            if (h < 2) return new Color(x + m, c + m, m);
+            if (h < 3) return new Color(m, c + m, x + m);
+            if (h < 4) return new Color(m, x + m, c + m);
+            if (h < 5) return new Color(x + m, m, c + m);
+            return new Color(c + m, m, x + m);
         }
     }
 }

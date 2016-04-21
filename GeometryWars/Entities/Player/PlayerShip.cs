@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+using GeometryWars.Effects;
 using GeometryWars.Effects.Particle;
 using GeometryWars.Utilities;
-using GeometryWars.Effects;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GeometryWars.Entities.Player
 {
@@ -14,9 +14,9 @@ namespace GeometryWars.Entities.Player
 		public static PlayerShip Instance => _instance ?? (_instance = new PlayerShip());
 
         private const int CooldownFrames = 6;
-        private int _cooldowmRemaining = 0;
+        private int _cooldowmRemaining;
 
-        private int _framesUntilRespawn = 0;
+        private int _framesUntilRespawn;
 		public bool IsDead => _framesUntilRespawn > 0;
 
         private static readonly Random Rand = new Random();
@@ -135,7 +135,7 @@ namespace GeometryWars.Entities.Player
                 i => {
                         var speed = 18f * (1f - 1 / Rand.NextFloat(1f, 10f));
                         var color = Color.Lerp(Color.White, explosionColor, Rand.NextFloat(0, 1));
-                        var state = new ParticleState()
+                        var state = new ParticleState
                         {
                             Velocity = Rand.NextVector2(speed, speed),
                             Type = ParticleType.None,

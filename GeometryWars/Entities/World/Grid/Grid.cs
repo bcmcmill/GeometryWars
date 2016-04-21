@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GeometryWars.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using GeometryWars.Utilities;
 
 namespace GeometryWars.Entities.World.Grid
 {
     public class Grid
 	{
-		Spring[] _springs;
-		PointMass[,] _points;
-		Vector2 _screenSize;
+        private readonly Spring[] _springs;
+        private readonly PointMass[,] _points;
+        private Vector2 _screenSize;
 
 		public Grid(Rectangle size, Vector2 spacing)
 		{
