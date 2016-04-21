@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace GeometryWars.Utilities
 {
-    static class TextureLoader
+    internal static class TextureLoader
 	{
 		public static Texture2D Player { get; private set; }
 		public static Texture2D Seeker { get; private set; }
@@ -15,7 +15,7 @@ namespace GeometryWars.Utilities
 
 		public static Texture2D LineParticle { get; private set; }
 		public static Texture2D Glow { get; private set; }
-		public static Texture2D Pixel { get; private set; }		// a single white pixel
+		public static Texture2D Pixel { get; private set; }	
 
 		public static SpriteFont Font { get; private set; }
 
@@ -26,7 +26,7 @@ namespace GeometryWars.Utilities
 			Wanderer = content.Load<Texture2D>("Textures/Wanderer");
 			Bullet = content.Load<Texture2D>("Textures/Bullet");
 			Pointer = content.Load<Texture2D>("Textures/Pointer");
-			BlackHole = content.Load<Texture2D>("Textures/BlackHole2");
+			BlackHole = content.Load<Texture2D>("Textures/BlackHole");
 
 			LineParticle = content.Load<Texture2D>("Textures/Laser");
 			Glow = content.Load<Texture2D>("Textures/Glow");

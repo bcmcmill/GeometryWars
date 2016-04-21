@@ -5,19 +5,19 @@ namespace GeometryWars.Entities.Player
     static class PlayerStatus
 	{
 		// amount of time it takes, in seconds, for a multiplier to expire.
-		private const float multiplierExpiryTime = 0.8f;
-		private const int maxMultiplier = 20;
+		private const float MultiplierExpiryTime = 0.8f;
+		private const int MaxMultiplier = 20;
 
 		public static int Lives { get; private set; }
 		public static int Score { get; private set; }
 		public static int HighScore { get; private set; }
 		public static int Multiplier { get; private set; }
-		public static bool IsGameOver { get { return Lives == 0; } }
+		public static bool IsGameOver => Lives == 0;
 
-		private static float multiplierTimeLeft;	// time until the current multiplier expires
-		private static int scoreForExtraLife;		// score required to gain an extra life
+        private static float _multiplierTimeLeft;	// time until the current multiplier expires
+		private static int _scoreForExtraLife;		// score required to gain an extra life
 
-		private const string highScoreFilename = "highscore.txt";
+		private const string HighScoreFilename = "highscore.txt";
 
 		// Static constructor
 		static PlayerStatus()
@@ -34,8 +34,8 @@ namespace GeometryWars.Entities.Player
 			Score = 0;
 			Multiplier = 1;
 			Lives = 4;
-			scoreForExtraLife = 2000;
-			multiplierTimeLeft = 0;
+			_scoreForExtraLife = 2000;
+			_multiplierTimeLeft = 0;
 		}
 
 		public static void Update()
@@ -43,9 +43,9 @@ namespace GeometryWars.Entities.Player
 			if (Multiplier > 1)
 			{
 				// update the multiplier timer
-				if ((multiplierTimeLeft -= (float)GeoWarsGame.GameTime.ElapsedGameTime.TotalSeconds) <= 0)
+				if ((_multiplierTimeLeft -= (float)GeoWarsGame.GameTime.ElapsedGameTime.TotalSeconds) <= 0)
 				{
-					multiplierTimeLeft = multiplierExpiryTime;
+					_multiplierTimeLeft = MultiplierExpiryTime;
 					ResetMultiplier();
 				}
 			}
@@ -57,9 +57,9 @@ namespace GeometryWars.Entities.Player
 				return;
 
 			Score += basePoints * Multiplier;
-			while (Score >= scoreForExtraLife)
+			while (Score >= _scoreForExtraLife)
 			{
-				scoreForExtraLife += 2000;
+				_scoreForExtraLife += 2000;
 				Lives++;
 			}
 		}
@@ -69,8 +69,8 @@ namespace GeometryWars.Entities.Player
 			if (PlayerShip.Instance.IsDead)
 				return;
 
-			multiplierTimeLeft = multiplierExpiryTime;
-			if (Multiplier < maxMultiplier)
+			_multiplierTimeLeft = MultiplierExpiryTime;
+			if (Multiplier < MaxMultiplier)
 				Multiplier++;
 		}
 
@@ -88,12 +88,12 @@ namespace GeometryWars.Entities.Player
 		{
 			// return the saved high score if possible and return 0 otherwise
 			int score;
-			return File.Exists(highScoreFilename) && int.TryParse(File.ReadAllText(highScoreFilename), out score) ? score : 0;
+			return File.Exists(HighScoreFilename) && int.TryParse(File.ReadAllText(HighScoreFilename), out score) ? score : 0;
 		}
 
 		private static void SaveHighScore(int score)
 		{
-			File.WriteAllText(highScoreFilename, score.ToString());
+			File.WriteAllText(HighScoreFilename, score.ToString());
 		}
 	}
 }

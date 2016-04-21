@@ -7,40 +7,40 @@ namespace GeometryWars.Effects.Particle
     public class ParticleManager
 	{
 		// This delegate will be called for each particle.
-		private Action<Particle> updateParticle;
-		private CircularParticleArray particleList;
+		private readonly Action<Particle> _updateParticle;
+		private readonly CircularParticleArray _particleList;
 
 		public ParticleManager(int capacity, Action<Particle> updateParticle)
 		{
-			this.updateParticle = updateParticle;
-			particleList = new CircularParticleArray(capacity);
+			_updateParticle = updateParticle;
+			_particleList = new CircularParticleArray(capacity);
 
 			// Populate the list with empty particle objects, for reuse.
-			for (int i = 0; i < capacity; i++)
-				particleList[i] = new Particle();
+			for (var i = 0; i < capacity; i++)
+				_particleList[i] = new Particle();
 		}
 
 		public void Update()
 		{
-			int removalCount = 0;
+			var removalCount = 0;
 
-			for (int i = 0; i < particleList.Count; i++)
+			for (var i = 0; i < _particleList.Count; i++)
 			{
-				var particle = particleList[i];
+				var particle = _particleList[i];
 
-				updateParticle(particle);
+				_updateParticle(particle);
 
 				particle.PercentLife -= 1f / particle.Duration;
 
 				// sift deleted particles to the end of the list
-				Swap(particleList, i - removalCount, i);
+				Swap(_particleList, i - removalCount, i);
 
 				// if the alpha < 0, delete this particle
 				if (particle.PercentLife < 0)
 					removalCount++;
 			}
 
-			particleList.Count -= removalCount;
+			_particleList.Count -= removalCount;
 		}
 
 		private static void Swap(CircularParticleArray list, int index1, int index2)
@@ -52,11 +52,11 @@ namespace GeometryWars.Effects.Particle
 
 		public void Draw(SpriteBatch spriteBatch)
 		{
-			for (int i = 0; i < particleList.Count; i++)
+			for (var i = 0; i < _particleList.Count; i++)
 			{
-				var particle = particleList[i];
+				var particle = _particleList[i];
 
-				Vector2 origin = new Vector2(particle.Texture.Width / 2, particle.Texture.Height / 2);
+				var origin = new Vector2(particle.Texture.Width / 2, particle.Texture.Height / 2);
 				spriteBatch.Draw(particle.Texture, particle.Position, null, particle.Tint, particle.Orientation, origin, particle.Scale, 0, 0);
 			}
 		}
@@ -69,16 +69,16 @@ namespace GeometryWars.Effects.Particle
 		public void CreateParticle(Texture2D texture, Vector2 position, Color tint, float duration, Vector2 scale, ParticleState state, float theta = 0)
 		{
 			Particle particle;
-			if (particleList.Count == particleList.Capacity)
+			if (_particleList.Count == _particleList.Capacity)
 			{
 				// if the list is full, overwrite the oldest particle, and rotate the circular list
-				particle = particleList[0];
-				particleList.Start++;
+				particle = _particleList[0];
+				_particleList.Start++;
 			}
 			else
 			{
-				particle = particleList[particleList.Count];
-				particleList.Count++;
+				particle = _particleList[_particleList.Count];
+				_particleList.Count++;
 			}
 
 			// Create the particle
@@ -95,12 +95,9 @@ namespace GeometryWars.Effects.Particle
 
 		public void Clear()
 		{
-			particleList.Count = 0;
+			_particleList.Count = 0;
 		}
 
-		public int ParticleCount
-		{
-			get { return particleList.Count; }
-		}
+		public int ParticleCount => _particleList.Count;
 	}
 }
