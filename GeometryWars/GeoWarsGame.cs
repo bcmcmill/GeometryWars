@@ -75,7 +75,7 @@ namespace GeometryWars
 
 			// Allows the game to exit
 			if (Input.WasButtonPressed(Buttons.Back) || Input.WasKeyPressed(Keys.Escape))
-				this.Exit();
+                Exit();
 
 			if (Input.WasKeyPressed(Keys.P))
 				paused = !paused;

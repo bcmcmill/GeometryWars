@@ -13,7 +13,7 @@ using Android.App;
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("")]
 [assembly: AssemblyProduct ("")]
-[assembly: AssemblyCopyright ("Brandon")]
+[assembly: AssemblyCopyright ("Brandon McMillan and Kevin Florian")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
 
