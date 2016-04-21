@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
+using GeometryWars.Entities.Player;
 
-namespace GeometryWars
+namespace GeometryWars.Utilities
 {
     static class Input
 	{

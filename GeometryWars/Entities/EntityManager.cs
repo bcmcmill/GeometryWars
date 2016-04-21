@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using GeometryWars.Entities.World;
+using GeometryWars.Entities.Player;
+using GeometryWars.Entities.Enemies;
 
-namespace GeometryWars
+namespace GeometryWars.Entities
 {
     static class EntityManager
 	{

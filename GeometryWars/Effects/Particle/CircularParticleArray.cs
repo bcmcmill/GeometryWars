@@ -1,4 +1,4 @@
-﻿namespace GeometryWars
+﻿namespace GeometryWars.Effects.Particle
 {
     // Represents a circular array with an arbitrary starting point. It's useful for efficiently overwriting
     // the oldest particles when the array gets full. Simply overwrite particleList[0] and advance Start.

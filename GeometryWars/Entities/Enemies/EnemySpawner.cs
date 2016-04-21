@@ -1,7 +1,9 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using GeometryWars.Entities.Player;
+using GeometryWars.Entities.World;
 
-namespace GeometryWars
+namespace GeometryWars.Entities.Enemies
 {
     static class EnemySpawner
 	{

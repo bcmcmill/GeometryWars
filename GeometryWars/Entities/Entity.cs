@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
-namespace GeometryWars
+namespace GeometryWars.Entities
 {
 	abstract class Entity
 	{

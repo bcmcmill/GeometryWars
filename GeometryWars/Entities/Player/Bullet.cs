@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using GeometryWars.Effects.Particle;
+using GeometryWars.Utilities;
 
-namespace GeometryWars
+namespace GeometryWars.Entities.Player
 {
     class Bullet : Entity
 	{
