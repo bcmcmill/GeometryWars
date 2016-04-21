@@ -14,8 +14,8 @@ using GeometryWars.Entities.Enemies;
 
 namespace GeometryWars
 {
-    public class GeoWarsGame : Microsoft.Xna.Framework.Game
-	{
+    public class GeoWarsGame : Game
+    {
 		public static GeoWarsGame Instance { get; private set; }
 		public static Viewport Viewport { get { return Instance.GraphicsDevice.Viewport; } }
 		public static Vector2 ScreenSize { get { return new Vector2(Viewport.Width, Viewport.Height); } }
@@ -36,12 +36,11 @@ namespace GeometryWars
 			graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
 
-			graphics.PreferredBackBufferWidth = 1440;
-			graphics.PreferredBackBufferHeight = 900;
+			graphics.PreferredBackBufferWidth = 1024;
+			graphics.PreferredBackBufferHeight = 768;
 
-            // TODO: Fix Bloom Filter.
 			bloom = new BloomComponent(this);
-			// Components.Add(bloom);
+			Components.Add(bloom);
 			bloom.Settings = new BloomSettings(null, 0.25f, 4, 2, 1, 1.5f, 1);
 		}
 
@@ -100,7 +99,7 @@ namespace GeometryWars
 			if (!useBloom)
 				base.Draw(gameTime);
 
-			GraphicsDevice.Clear(Color.Black);
+			GraphicsDevice.Clear(Color.TransparentBlack);
 
 			spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive);
 			EntityManager.Draw(spriteBatch);

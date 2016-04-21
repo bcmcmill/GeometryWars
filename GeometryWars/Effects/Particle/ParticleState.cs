@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using GeometryWars.Entities;
 using GeometryWars.Utilities;
+using System.Threading.Tasks;
 
 namespace GeometryWars.Effects.Particle
 {
@@ -72,20 +73,21 @@ namespace GeometryWars.Effects.Particle
 
 			if (particle.State.Type != ParticleType.IgnoreGravity)
 			{
-				foreach (var blackHole in EntityManager.BlackHoles)
-				{
-					var dPos = blackHole.Position - pos;
-					float distance = dPos.Length();
-					var n = dPos / distance;
-					vel += 10000 * n / (distance * distance + 10000);
+                Parallel.ForEach(EntityManager.BlackHoles, 
+                    blackHole =>
+                    {
+                        var dPos = blackHole.Position - pos;
+                        float distance = dPos.Length();
+                        var n = dPos / distance;
+                        vel += 10000 * n / (distance * distance + 10000);
 
-					// add tangential acceleration for nearby particles
-					if (distance < 400)
-						vel += 45 * new Vector2(n.Y, -n.X) / (distance + 100);
-				}
-			}
+                        // add tangential acceleration for nearby particles
+                        if (distance < 400)
+                            vel += 45 * new Vector2(n.Y, -n.X) / (distance + 100);
+                    });
+                }
 
-			if (Math.Abs(vel.X) + Math.Abs(vel.Y) < 0.00000000001f)	// denormalized floats cause significant performance issues
+			if (Math.Abs(vel.X) + Math.Abs(vel.Y) < 0.00000000001f)	// normalize floats
 				vel = Vector2.Zero;
 			else if (particle.State.Type == ParticleType.Enemy)
 				vel *= 0.94f;

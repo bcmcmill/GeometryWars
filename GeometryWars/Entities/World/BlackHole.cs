@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GeometryWars.Effects.Particle;
 using GeometryWars.Utilities;
+using GeometryWars.Entities.Enemies;
 
 namespace GeometryWars.Entities.World
 {
@@ -28,7 +29,7 @@ namespace GeometryWars.Entities.World
             // Parallel ForEach to add effects of BlackHole to Bullets and Particles -- Example of Task Parallelism
             Parallel.ForEach(entities, 
                 entity => {
-                                if (entity is Enemies.Enemy && !(entity as Enemies.Enemy).IsActive)
+                                if (entity is Enemy && !(entity as Enemy).IsActive)
                                     return;
 
                                 // bullets are repelled by black holes and everything else is attracted

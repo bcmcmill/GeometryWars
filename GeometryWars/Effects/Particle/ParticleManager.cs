@@ -23,6 +23,7 @@ namespace GeometryWars.Effects.Particle
 		public void Update()
 		{
 			int removalCount = 0;
+
 			for (int i = 0; i < particleList.Count; i++)
 			{
 				var particle = particleList[i];
@@ -38,6 +39,7 @@ namespace GeometryWars.Effects.Particle
 				if (particle.PercentLife < 0)
 					removalCount++;
 			}
+
 			particleList.Count -= removalCount;
 		}
 
