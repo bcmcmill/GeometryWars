@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using GeometryWars.Effects.Particle;
+using GeometryWars.Utilities;
+using GeometryWars.Effects;
+using GeometryWars.Entities.Player;
 
-namespace GeometryWars
+namespace GeometryWars.Entities.Enemies
 {
     class Enemy : Entity
 	{

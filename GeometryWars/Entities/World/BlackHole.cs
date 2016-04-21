@@ -2,8 +2,10 @@
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using GeometryWars.Effects.Particle;
+using GeometryWars.Utilities;
 
-namespace GeometryWars
+namespace GeometryWars.Entities.World
 {
     class BlackHole : Entity
 	{
@@ -26,11 +28,11 @@ namespace GeometryWars
             // Parallel ForEach to add effects of BlackHole to Bullets and Particles -- Example of Task Parallelism
             Parallel.ForEach(entities, 
                 entity => {
-                                if (entity is Enemy && !(entity as Enemy).IsActive)
+                                if (entity is Enemies.Enemy && !(entity as Enemies.Enemy).IsActive)
                                     return;
 
                                 // bullets are repelled by black holes and everything else is attracted
-                                if (entity is Bullet)
+                                if (entity is Player.Bullet)
                                     entity.Velocity += (entity.Position - Position).ScaleTo(0.3f);
                                 else
                                 {
@@ -72,8 +74,8 @@ namespace GeometryWars
 			if (hitPoints <= 0)
 			{
 				IsExpired = true;
-				PlayerStatus.AddPoints(5);
-				PlayerStatus.IncreaseMultiplier();
+                Player.PlayerStatus.AddPoints(5);
+                Player.PlayerStatus.IncreaseMultiplier();
 			}
 
 
@@ -97,7 +99,7 @@ namespace GeometryWars
                             GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.LineParticle, pos, color, 90, 1.5f, state);
                          }); // End Parallel For
 
-			Sound.Explosion.Play(0.5f, rand.NextFloat(-0.2f, 0.2f), 0);
+            Effects.Sound.Explosion.Play(0.5f, rand.NextFloat(-0.2f, 0.2f), 0);
 		}
 
 		public void Kill()

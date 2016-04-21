@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace GeometryWars
+namespace GeometryWars.Entities.Player
 {
     static class PlayerStatus
 	{

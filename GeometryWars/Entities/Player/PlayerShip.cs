@@ -2,8 +2,11 @@
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using GeometryWars.Effects.Particle;
+using GeometryWars.Utilities;
+using GeometryWars.Effects;
 
-namespace GeometryWars
+namespace GeometryWars.Entities.Player
 {
     class PlayerShip : Entity
 	{

@@ -1,7 +1,9 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using GeometryWars.Entities;
+using GeometryWars.Utilities;
 
-namespace GeometryWars
+namespace GeometryWars.Effects.Particle
 {
     public enum ParticleType { None, Enemy, Bullet, IgnoreGravity }
 

@@ -3,7 +3,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using BloomPostprocess;
+using GeometryWars.Effects.Particle;
+using GeometryWars.Entities.World.Grid;
+using GeometryWars.Effects.Bloom;
+using GeometryWars.Entities;
+using GeometryWars.Entities.Player;
+using GeometryWars.Effects;
+using GeometryWars.Utilities;
+using GeometryWars.Entities.Enemies;
 
 namespace GeometryWars
 {

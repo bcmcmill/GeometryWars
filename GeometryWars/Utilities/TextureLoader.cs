@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 
-namespace GeometryWars
+namespace GeometryWars.Utilities
 {
     static class TextureLoader
 	{

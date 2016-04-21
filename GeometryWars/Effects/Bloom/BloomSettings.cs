@@ -7,7 +7,7 @@
 //-----------------------------------------------------------------------------
 #endregion
 
-namespace BloomPostprocess
+namespace GeometryWars.Effects.Bloom
 {
 	/// <summary>
 	/// Class holds all the settings used to tweak the bloom effect.
