@@ -1,11 +1,13 @@
 ﻿using System.Threading.Tasks;
-using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using GeometryWars.Entities.World;
 using GeometryWars.Entities.Player;
 using GeometryWars.Entities.Enemies;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace GeometryWars.Entities
 {
@@ -56,49 +58,41 @@ namespace GeometryWars.Entities
 
 			addedEntities.Clear();
 
-			entities = entities.Where(x => !x.IsExpired).ToList();
-			bullets = bullets.Where(x => !x.IsExpired).ToList();
-			enemies = enemies.Where(x => !x.IsExpired).ToList();
-			blackHoles = blackHoles.Where(x => !x.IsExpired).ToList();
-		}
+            entities = entities.AsParallel<Entity>().Where(x => !x.IsExpired).ToList();
+            bullets = bullets.AsParallel<Bullet>().Where(x => !x.IsExpired).ToList();
+            enemies = enemies.AsParallel<Enemy>().Where(x => !x.IsExpired).ToList();
+            blackHoles = blackHoles.AsParallel<BlackHole>().Where(x => !x.IsExpired).ToList();
+        }
 
 		static void HandleCollisions()
 		{
             // handle collisions between enemies
             Parallel.For(0, enemies.Count,
                 i => {
-                        Parallel.For(i + 1, enemies.Count,
-                            j => {
-                                    if (IsColliding(enemies[i], enemies[j]))
-                                    {
-                                        enemies[i].HandleCollision(enemies[j]);
-                                        enemies[j].HandleCollision(enemies[i]);
-                                    }
-                                 }); // End Parallel For
+                        for(int j = i + 1; j < enemies.Count; j++)
+                        {
+                            if (IsColliding(enemies[i], enemies[j]))
+                            {
+                                enemies[i].HandleCollision(enemies[j]);
+                                enemies[j].HandleCollision(enemies[i]);
+                            }
+                        } // End Parallel For
                      }); // End Parallel For
 
             // handle collisions between bullets and enemies
             Parallel.For(0, enemies.Count,
                 i => {
-                        Parallel.For(0, bullets.Count,
-                            j => {
-                                    if (IsColliding(enemies[i], bullets[j]))
-                                    {
-                                        enemies[i].WasShot();
-                                        bullets[j].IsExpired = true;
-                                    }
-                                 }); // End Parallel For
-                     }); // End Parallel For
+                        for (int j = 0; j < bullets.Count; j++)
+                        {
+                            if (IsColliding(enemies[i], bullets[j]))
+                            {
+                                enemies[i].WasShot();
+                                bullets[j].IsExpired = true;
+                            }
+                        } // end for
+                     }); // end parallel for
 
             // handle collisions between the player and enemies
-            //Parallel.For(0, enemies.Count,
-            //    i => {
-            //            if (enemies[i].IsActive && IsColliding(PlayerShip.Instance, enemies[i]))
-            //            {
-            //                KillPlayer();
-            //                return;
-            //            }
-            //         }); // End Parallel For
 
             Parallel.ForEach(enemies, (enemy, loopState) => {
                 if(enemy.IsActive && IsColliding(PlayerShip.Instance, enemy))
@@ -116,7 +110,7 @@ namespace GeometryWars.Entities
                             j => {
                                     if (enemies[j].IsActive && IsColliding(blackHoles[i], enemies[j]))
                                         enemies[j].WasShot();
-                                 }); // End Parallel For
+                                 }); // end parallel for
 
                         Parallel.For(0, bullets.Count,
                             j => {
@@ -125,7 +119,7 @@ namespace GeometryWars.Entities
                                         bullets[j].IsExpired = true;
                                         blackHoles[i].WasShot();
                                     }
-                                 }); // End Parallel For
+                                 }); // end parallel for
 
                         if (IsColliding(PlayerShip.Instance, blackHoles[i]))
                         {
@@ -133,14 +127,14 @@ namespace GeometryWars.Entities
                             loopState.Stop();
                             return;
                         }
-                     }); // End Parallel For
+                     }); // end parallel for
         }
 
 		private static void KillPlayer()
 		{
 			PlayerShip.Instance.Kill();
-            Parallel.ForEach(enemies, (enemy) => enemy.WasShot());
-            Parallel.ForEach(blackHoles, (blackHole) => blackHole.Kill());
+            Parallel.ForEach(enemies, enemy => enemy.WasShot());
+            Parallel.ForEach(blackHoles, blackHole => blackHole.Kill());
 			EnemySpawner.Reset();
 		}
 
