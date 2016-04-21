@@ -14,15 +14,9 @@ namespace GeometryWars.Entities
 		public float Radius = 20;	// used for circular collision detection
 		public bool IsExpired;		// true if the entity was destroyed and should be deleted.
 
-		public Vector2 Size
-		{
-			get
-			{
-				return Image == null ? Vector2.Zero : new Vector2(Image.Width, Image.Height);
-			}
-		}
+		public Vector2 Size => Image == null ? Vector2.Zero : new Vector2(Image.Width, Image.Height);
 
-		public abstract void Update();
+	    public abstract void Update();
 
 		public virtual void Draw(SpriteBatch spriteBatch)
 		{

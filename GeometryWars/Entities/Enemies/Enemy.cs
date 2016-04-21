@@ -21,7 +21,7 @@ namespace GeometryWars.Entities.Enemies
 
 		public Enemy(Texture2D image, Vector2 position)
 		{
-			this.Image = image;
+			Image = image;
 			Position = position;
 			Radius = image.Width / 2f;
 			Color = Color.Transparent;
@@ -31,7 +31,7 @@ namespace GeometryWars.Entities.Enemies
 		public static Enemy CreateSeeker(Vector2 position)
 		{
 			var enemy = new Enemy(TextureLoader.Seeker, position);
-			enemy.AddBehavior(enemy.FollowPlayer(0.9f));
+			enemy.AddBehavior(enemy.SeekPlayer(0.9f));
 			enemy.PointValue = 2;
 
 			return enemy;
@@ -40,7 +40,7 @@ namespace GeometryWars.Entities.Enemies
 		public static Enemy CreateWanderer(Vector2 position)
 		{
 			var enemy = new Enemy(TextureLoader.Wanderer, position);
-			enemy.AddBehavior(enemy.MoveRandomly());
+			enemy.AddBehavior(enemy.WanderRandomly());
 
 			return enemy;
 		}
@@ -121,7 +121,7 @@ namespace GeometryWars.Entities.Enemies
 			Sound.Explosion.Play(0.5f, Rand.NextFloat(-0.2f, 0.2f), 0);
 		}
 
-		IEnumerable<int> FollowPlayer(float acceleration)
+        private IEnumerable<int> SeekPlayer(float acceleration)
 		{
 			while (true)
 			{
@@ -135,7 +135,7 @@ namespace GeometryWars.Entities.Enemies
 			}
 		}
 
-		IEnumerable<int> MoveRandomly()
+        private IEnumerable<int> WanderRandomly()
 		{
 			var direction = Rand.NextFloat(0, MathHelper.TwoPi);
 

@@ -8,7 +8,7 @@ namespace GeometryWars.Entities.Player
 {
     class Bullet : Entity
 	{
-		private static Random _rand = new Random();
+		private static readonly Random Rand = new Random();
 
 		public Bullet(Vector2 position, Vector2 velocity)
 		{
@@ -35,7 +35,7 @@ namespace GeometryWars.Entities.Player
                 Parallel.For(0, 30, 
                     i => {
                             GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.LineParticle, Position, Color.LightBlue, 50, 1,
-                            new ParticleState() { Velocity = _rand.NextVector2(0, 9), Type = ParticleType.Bullet, LengthMultiplier = 1 });
+                            new ParticleState() { Velocity = Rand.NextVector2(0, 9), Type = ParticleType.Bullet, LengthMultiplier = 1 });
                          });
 			}
 		}

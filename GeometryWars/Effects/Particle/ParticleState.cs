@@ -30,10 +30,12 @@ namespace GeometryWars.Effects.Particle
 
         public static ParticleState GetRandom(float minVel, float maxVel)
         {
-            var state = new ParticleState();
-            state.Velocity = Rand.NextVector2(minVel, maxVel);
-            state.Type = ParticleType.None;
-            state.LengthMultiplier = 1;
+            var state = new ParticleState
+            {
+                Velocity = Rand.NextVector2(minVel, maxVel),
+                Type = ParticleType.None,
+                LengthMultiplier = 1
+            };
 
             return state;
         }

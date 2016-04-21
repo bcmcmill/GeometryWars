@@ -98,9 +98,6 @@ namespace GeometryWars.Effects.Particle
 			_particleList.Count = 0;
 		}
 
-		public int ParticleCount
-		{
-			get { return _particleList.Count; }
-		}
+		public int ParticleCount => _particleList.Count;
 	}
 }

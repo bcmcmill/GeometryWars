@@ -14,15 +14,15 @@ namespace GeometryWars.Effects
 
 		private static SoundEffect[] _explosions;
 		// return a random explosion sound
-		public static SoundEffect Explosion { get { return _explosions[Rand.Next(_explosions.Length)]; } }
+		public static SoundEffect Explosion => _explosions[Rand.Next(_explosions.Length)];
 
-		private static SoundEffect[] _shots;
-		public static SoundEffect Shot { get { return _shots[Rand.Next(_shots.Length)]; } }
+        private static SoundEffect[] _shots;
+		public static SoundEffect Shot => _shots[Rand.Next(_shots.Length)];
 
-		private static SoundEffect[] _spawns;
-		public static SoundEffect Spawn { get { return _spawns[Rand.Next(_spawns.Length)]; } }
+        private static SoundEffect[] _spawns;
+		public static SoundEffect Spawn => _spawns[Rand.Next(_spawns.Length)];
 
-		public static void Load(ContentManager content)
+        public static void Load(ContentManager content)
 		{
 			Music = content.Load<Song>("Sound/Music");
 

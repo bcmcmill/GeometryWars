@@ -13,9 +13,9 @@ namespace GeometryWars.Utilities
 
 		private static bool _isAimingWithMouse = false;
 
-		public static Vector2 MousePosition { get { return new Vector2(_mouseState.X, _mouseState.Y); } }
+		public static Vector2 MousePosition => new Vector2(_mouseState.X, _mouseState.Y);
 
-		public static void Update()
+        public static void Update()
 		{
 			_lastKeyboardState = _keyboardState;
 			_lastMouseState = _mouseState;
@@ -84,23 +84,16 @@ namespace GeometryWars.Utilities
 				direction.Y += 1;
 
 			// If there's no aim input, return zero. Otherwise normalize the direction to have a length of 1.
-			if (direction == Vector2.Zero)
-				return Vector2.Zero;
-			else
-				return Vector2.Normalize(direction);
+			return direction == Vector2.Zero ? Vector2.Zero : Vector2.Normalize(direction);
 		}
 
 		private static Vector2 GetMouseAimDirection()
 		{
-			var direction = MousePosition - PlayerShip.Instance.Position;
-
-			if (direction == Vector2.Zero)
-				return Vector2.Zero;
-			else
-				return Vector2.Normalize(direction);
+		    var direction = MousePosition - PlayerShip.Instance.Position;
+		    return direction == Vector2.Zero ? Vector2.Zero : Vector2.Normalize(direction);
 		}
 
-		public static bool WasBombButtonPressed()
+        public static bool WasBombButtonPressed()
 		{
 			return WasButtonPressed(Buttons.LeftTrigger) || WasButtonPressed(Buttons.RightTrigger) || WasKeyPressed(Keys.Space);
 		}
