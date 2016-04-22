@@ -21,6 +21,7 @@ namespace GeometryWars
         private bool _paused;
         private SpriteBatch _spriteBatch;
         private bool _useBloom = true;
+        private readonly FrameCounter _frameCounter = new FrameCounter();
 
         public GraphicsDeviceManager Graphics;
 
@@ -32,7 +33,7 @@ namespace GeometryWars
 
             Graphics.PreferredBackBufferWidth = 1920;
             Graphics.PreferredBackBufferHeight = 1080;
-
+            Graphics.IsFullScreen = true;
             _bloom = new BloomComponent(this);
             Components.Add(_bloom);
             _bloom.Settings = new BloomSettings(null, 0.25f, 4, 3, 1, 1.8f, 1.5f);
@@ -49,10 +50,10 @@ namespace GeometryWars
         {
             base.Initialize();
 
-            ParticleManager = new ParticleManager(1024*20, ParticleState.UpdateParticle);
+            ParticleManager = new ParticleManager(1024*25, ParticleState.UpdateParticle);
 
-            const int maxGridPoints = 1600;
-            var gridSpacing = new Vector2((float) Math.Sqrt(Viewport.Width*Viewport.Height/maxGridPoints));
+            const int maxGridPoints = 2200;
+            var gridSpacing = new Vector2((float) Math.Sqrt(Viewport.Width * Viewport.Height / maxGridPoints));
             Grid = new Grid(Viewport.Bounds, gridSpacing);
 
             EntityManager.Add(PlayerShip.Instance);
@@ -114,23 +115,29 @@ namespace GeometryWars
             if (_useBloom)
                 base.Draw(gameTime);
 
-            // Draw the user interface without bloom
+            // Draw the user interface without bloom effect
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive);
 
             _spriteBatch.DrawString(TextureLoader.Font, "Lives: " + PlayerStatus.Lives, new Vector2(5), Color.White);
             DrawRightAlignedString("Score: " + PlayerStatus.Score, 5);
             DrawRightAlignedString("Multiplier: " + PlayerStatus.Multiplier, 35);
-            // draw the custom mouse cursor
-            _spriteBatch.Draw(TextureLoader.Pointer, Input.MousePosition, Color.White);
+
+            var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            _frameCounter.Update(deltaTime);
+
+            var fps = $"FPS: {_frameCounter.AverageFramesPerSecond}";
+            var textSize = TextureLoader.Font.MeasureString(fps);
+            _spriteBatch.DrawString(TextureLoader.Font, fps, new Vector2(ScreenSize.X / 2 - textSize.X / 2, 5), Color.White);
 
             if (PlayerStatus.IsGameOver)
             {
-                var text = "Game Over\n" +
+                var text = "   Game Over\n" +
                            "Your Score: " + PlayerStatus.Score + "\n" +
                            "High Score: " + PlayerStatus.HighScore;
 
-                var textSize = TextureLoader.Font.MeasureString(text);
-                _spriteBatch.DrawString(TextureLoader.Font, text, ScreenSize/2 - textSize/2, Color.White);
+                 textSize = TextureLoader.Font.MeasureString(text);
+                _spriteBatch.DrawString(TextureLoader.Font, text, ScreenSize / 2 - textSize / 2, Color.White);
             }
 
             _spriteBatch.End();

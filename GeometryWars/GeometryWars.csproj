@@ -95,6 +95,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GeoWarsGame.cs" />
+    <Compile Include="Utilities\FrameCounter.cs" />
     <Compile Include="Utilities\TextureLoader.cs" />
     <Compile Include="Entities\Enemies\EnemySpawner.cs" />
     <Compile Include="Effects\Bloom\BloomSettings.cs" />

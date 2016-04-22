@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using GeometryWars.Utilities;
 using Microsoft.Xna.Framework;
@@ -36,22 +37,33 @@ namespace GeometryWars.Entities.World.Grid
             });
 
             // link the point masses with springs
-            for (var y = 0; y < numRows; y++)
+
+            var _lock = new object();
+
+            Parallel.For(0, numRows, y =>
+            {
+                var tempList = new List<Spring>();
+
                 for (var x = 0; x < numColumns; x++)
                 {
-                    if (x == 0 || y == 0 || x == numColumns - 1 || y == numRows - 1) // anchor the border of the grid
-                        springList.Add(new Spring(fixedPoints[x, y], _points[x, y], 0.1f, 0.1f));
-                    else if (x%3 == 0 && y%3 == 0) // loosely anchor 1/9th of the point masses
-                        springList.Add(new Spring(fixedPoints[x, y], _points[x, y], 0.002f, 0.02f));
+                    if (x == 0 || y == 0 || x == numColumns - 1 || y == numRows - 1)
+                        tempList.Add(new Spring(fixedPoints[x, y], _points[x, y], 0.1f, 0.1f));
+                    else if (x % 3 == 0 && y % 3 == 0)
+                        tempList.Add(new Spring(fixedPoints[x, y], _points[x, y], 0.002f, 0.02f));
 
                     const float stiffness = 0.28f;
                     const float damping = 0.06f;
 
                     if (x > 0)
-                        springList.Add(new Spring(_points[x - 1, y], _points[x, y], stiffness, damping));
+                        tempList.Add(new Spring(_points[x - 1, y], _points[x, y], stiffness, damping));
                     if (y > 0)
-                        springList.Add(new Spring(_points[x, y - 1], _points[x, y], stiffness, damping));
+                        tempList.Add(new Spring(_points[x, y - 1], _points[x, y], stiffness, damping));
                 }
+
+                lock (_lock) { 
+                    springList.AddRange(tempList);
+                }
+            });
 
             _springs = springList.ToArray();
         }
@@ -69,7 +81,7 @@ namespace GeometryWars.Entities.World.Grid
                     mass.ApplyForce(10*force/(10 + Vector3.Distance(position, mass.Position)));
             });
         }
-
+        
         public void ApplyImplosiveForce(float force, Vector2 position, float radius)
         {
             ApplyImplosiveForce(force, new Vector3(position, 0), radius);
@@ -97,7 +109,7 @@ namespace GeometryWars.Entities.World.Grid
             {
                 var dist2 = Vector3.DistanceSquared(position, mass.Position);
                 if (!(dist2 < radius*radius)) return;
-                mass.ApplyForce(100*force*(mass.Position - position)/(10000 + dist2));
+                mass.ApplyForce(100 * force * (mass.Position - position) / (10000 + dist2));
                 mass.IncreaseDamping(0.6f);
             });
         }
@@ -114,10 +126,8 @@ namespace GeometryWars.Entities.World.Grid
 
             var width = _points.GetLength(0);
             var height = _points.GetLength(1);
-            var color = new Color(30, 30, 139, 85); // dark blue
+            var color = new Color(23, 97, 181, 85);
 
-            // TODO:
-            // Needs parallization
             for (var y = 1; y < height; y++)
             {
                 for (var x = 1; x < width; x++)
@@ -127,7 +137,7 @@ namespace GeometryWars.Entities.World.Grid
                     if (x > 1)
                     {
                         left = ToVec2(_points[x - 1, y].Position);
-                        var thickness = y%3 == 1 ? 3f : 1f;
+                        var thickness = y % 3 == 1 ? 3f : 1f;
 
                         // use Catmull-Rom interpolation to help smooth bends in the grid
                         var clampedX = Math.Min(x + 1, width - 1);
@@ -147,7 +157,7 @@ namespace GeometryWars.Entities.World.Grid
                     if (y > 1)
                     {
                         up = ToVec2(_points[x, y - 1].Position);
-                        var thickness = x%3 == 1 ? 3f : 1f;
+                        var thickness = x % 3 == 1 ? 3f : 1f;
                         var clampedY = Math.Min(y + 1, height - 1);
                         var mid = Vector2.CatmullRom(ToVec2(_points[x, y - 2].Position), up, p,
                             ToVec2(_points[x, clampedY].Position), 0.5f);
@@ -163,12 +173,12 @@ namespace GeometryWars.Entities.World.Grid
 
                     // Add interpolated lines halfway between our point masses. This makes the grid look
                     // denser without the cost of simulating more springs and point masses.
-                    if (x > 1 && y > 1)
-                    {
-                        var upLeft = ToVec2(_points[x - 1, y - 1].Position);
-                        spriteBatch.DrawLine(0.5f*(upLeft + up), 0.5f*(left + p), color, 1f); // vertical line
-                        spriteBatch.DrawLine(0.5f*(upLeft + left), 0.5f*(up + p), color, 1f); // horizontal line
-                    }
+                    if (x <= 1 || y <= 1)
+                        continue;
+
+                    var upLeft = ToVec2(_points[x - 1, y - 1].Position);
+                    spriteBatch.DrawLine(0.5f*(upLeft + up), 0.5f * (left + p), color, 1f); // vertical line
+                    spriteBatch.DrawLine(0.5f*(upLeft + left), 0.5f * (up + p), color, 1f); // horizontal line
                 }
             }
         }
@@ -176,7 +186,7 @@ namespace GeometryWars.Entities.World.Grid
         public Vector2 ToVec2(Vector3 v)
         {
             // do a perspective projection
-            var factor = (v.Z + 2000)/2000;
+            var factor = (v.Z + 2000) / 2000;
             return (new Vector2(v.X, v.Y) - _screenSize/2f)*factor + _screenSize/2;
         }
     }
