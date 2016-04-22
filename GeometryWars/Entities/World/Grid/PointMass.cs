@@ -31,7 +31,7 @@ namespace GeometryWars.Entities.World.Grid
             Velocity += _acceleration;
             Position += Velocity;
             _acceleration = Vector3.Zero;
-            if (Velocity.LengthSquared() < 0.001f*0.001f)
+            if (Velocity.LengthSquared() < 0.001f * 0.001f)
                 Velocity = Vector3.Zero;
 
             Velocity *= _damping;

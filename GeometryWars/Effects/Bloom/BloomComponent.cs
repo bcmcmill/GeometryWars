@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -28,8 +29,7 @@ namespace GeometryWars.Effects.Bloom
         public Effect BloomExtractEffect;
         public Effect GaussianBlurEffect;
 
-        public BloomComponent(Game game)
-            : base(game)
+        public BloomComponent(Game game): base(game)
         {
             if (game == null)
                 throw new ArgumentNullException(nameof(game));
@@ -102,7 +102,7 @@ namespace GeometryWars.Effects.Bloom
 
             // Pass 2: draw from rendertarget 1 into rendertarget 2,
             // using a shader to apply a horizontal gaussian blur filter.
-            SetBlurEffectParameters(1.0f/_renderTarget1.Width, 0);
+            SetBlurEffectParameters(1.0f / _renderTarget1.Width, 0);
 
             DrawFullscreenQuad(_renderTarget1, _renderTarget2,
                 GaussianBlurEffect,
@@ -110,7 +110,7 @@ namespace GeometryWars.Effects.Bloom
 
             // Pass 3: draw from rendertarget 2 back into rendertarget 1,
             // using a shader to apply a vertical gaussian blur filter.
-            SetBlurEffectParameters(0, 1.0f/_renderTarget1.Height);
+            SetBlurEffectParameters(0, 1.0f / _renderTarget1.Height);
 
             DrawFullscreenQuad(_renderTarget2, _renderTarget1,
                 GaussianBlurEffect,
@@ -194,15 +194,15 @@ namespace GeometryWars.Effects.Bloom
 
             // Add pairs of additional sample taps, positioned
             // along a line in both directions from the center.
-            for (var i = 0; i < sampleCount/2; i++)
+            Parallel.For(0, sampleCount / 2, i =>
             {
                 // Store weights for the positive and negative taps.
                 var weight = ComputeGaussian(i + 1);
 
-                sampleWeights[i*2 + 1] = weight;
-                sampleWeights[i*2 + 2] = weight;
+                sampleWeights[i * 2 + 1] = weight;
+                sampleWeights[i * 2 + 2] = weight;
 
-                totalWeights += weight*2;
+                totalWeights += weight * 2;
 
                 // To get the maximum amount of blurring from a limited number of
                 // pixel shader samples, we take advantage of the bilinear filtering
@@ -212,20 +212,17 @@ namespace GeometryWars.Effects.Bloom
                 // This allows us to step in units of two texels per sample, rather
                 // than just one at a time. The 1.5 offset kicks things off by
                 // positioning us nicely in between two texels.
-                var sampleOffset = i*2 + 1.5f;
+                var sampleOffset = i * 2 + 1.5f;
 
-                var delta = new Vector2(dx, dy)*sampleOffset;
+                var delta = new Vector2(dx, dy) * sampleOffset;
 
                 // Store texture coordinate offsets for the positive and negative taps.
-                sampleOffsets[i*2 + 1] = delta;
-                sampleOffsets[i*2 + 2] = -delta;
-            }
+                sampleOffsets[i * 2 + 1] = delta;
+                sampleOffsets[i * 2 + 2] = -delta;
+            });
 
             // Normalize the list of sample weightings, so they will always sum to one.
-            for (var i = 0; i < sampleWeights.Length; i++)
-            {
-                sampleWeights[i] /= totalWeights;
-            }
+            Parallel.For(0, sampleWeights.Length, i => { sampleWeights[i] /= totalWeights; });
 
             // Tell the effect about our new filter settings.
             weightsParameter.SetValue(sampleWeights);
@@ -237,9 +234,7 @@ namespace GeometryWars.Effects.Bloom
         private float ComputeGaussian(float n)
         {
             var theta = Settings.BlurAmount;
-
-            return (float) (1.0/Math.Sqrt(2*Math.PI*theta)*
-                            Math.Exp(-(n*n)/(2*theta*theta)));
+            return (float) (1.0 / Math.Sqrt( 2 * Math.PI * theta) * Math.Exp(-(n * n) / (2 * theta * theta)));
         }
     }
 }
