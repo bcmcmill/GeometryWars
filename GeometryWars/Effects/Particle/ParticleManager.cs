@@ -32,7 +32,7 @@ namespace GeometryWars.Effects.Particle
 
                 _updateParticle(particle);
 
-                particle.PercentLife -= 1f/particle.Duration;
+                particle.PercentLife -= 1f / particle.Duration;
 
                 // sift deleted particles to the end of the list
                 Swap(_particleList, i - removalCount, i);
@@ -58,7 +58,7 @@ namespace GeometryWars.Effects.Particle
             {
                 var particle = _particleList[i];
 
-                var origin = new Vector2(particle.Texture.Width/2, particle.Texture.Height/2);
+                var origin = new Vector2(particle.Texture.Width / 2, particle.Texture.Height / 2);
                 spriteBatch.Draw(particle.Texture, particle.Position, null, particle.Tint, particle.Orientation, origin,
                     particle.Scale, 0, 0);
             }

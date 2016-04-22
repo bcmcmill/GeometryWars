@@ -21,7 +21,7 @@ namespace GeometryWars.Entities.World
         {
             Image = TextureLoader.BlackHole;
             Position = position;
-            Radius = Image.Width/2f;
+            Radius = Image.Width / 2f;
         }
 
         public override void Update()
@@ -49,11 +49,11 @@ namespace GeometryWars.Entities.World
                 }); // end parallel for
 
             // The black holes spray some orbiting particles. The spray toggles on and off every quarter second.
-            if (GeoWarsGame.GameTime.TotalGameTime.Milliseconds/250%2 == 0)
+            if (GeoWarsGame.GameTime.TotalGameTime.Milliseconds / 250 % 2 == 0)
             {
                 var sprayVel = MathUtil.FromPolar(_sprayAngle, Rand.NextFloat(12, 15));
                 var color = ColorUtil.HsvToColor(5, 0.5f, 0.8f); // light purple
-                var pos = Position + 2f*new Vector2(sprayVel.Y, -sprayVel.X) + Rand.NextVector2(4, 8);
+                var position = Position + 2f * new Vector2(sprayVel.Y, -sprayVel.X) + Rand.NextVector2(4, 8);
                 var state = new ParticleState
                 {
                     Velocity = sprayVel,
@@ -61,13 +61,13 @@ namespace GeometryWars.Entities.World
                     Type = ParticleType.Enemy
                 };
 
-                GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.LineParticle, pos, color, 190, 1.5f, state);
+                GeoWarsGame.ParticleManager.CreateParticle(TextureLoader.LineParticle, position, color, 190, 1.5f, state);
             }
 
             // rotate the spray direction
-            _sprayAngle -= MathHelper.TwoPi/50f;
+            _sprayAngle -= MathHelper.TwoPi / 50f;
 
-            GeoWarsGame.Grid.ApplyImplosiveForce((float) Math.Sin(_sprayAngle/2)*10 + 20, Position, 200);
+            GeoWarsGame.Grid.ApplyImplosiveForce((float) Math.Sin(_sprayAngle / 2) * 10 + 20, Position, 200);
         }
 
         public void WasShot()
@@ -84,7 +84,7 @@ namespace GeometryWars.Entities.World
             }
 
 
-            var hue = (float) (3*GeoWarsGame.GameTime.TotalGameTime.TotalSeconds%6);
+            var hue = (float) (3 * GeoWarsGame.GameTime.TotalGameTime.TotalSeconds%6);
             var color = ColorUtil.HsvToColor(hue, 0.25f, 1);
             const int numParticles = 150;
             var startOffset = Rand.NextFloat(0, MathHelper.TwoPi/numParticles);
@@ -95,7 +95,7 @@ namespace GeometryWars.Entities.World
                 {
                     var sprayVel = MathUtil.FromPolar(MathHelper.TwoPi*index/numParticles + startOffset,
                         Rand.NextFloat(8, 16));
-                    var pos = Position + 2f*sprayVel;
+                    var pos = Position + 2f * sprayVel;
                     var state = new ParticleState
                     {
                         Velocity = sprayVel,
@@ -118,8 +118,8 @@ namespace GeometryWars.Entities.World
         public override void Draw(SpriteBatch spriteBatch)
         {
             // Pulsate the size of the BlackHole
-            var scale = 1 + 0.1f*(float) Math.Sin(10*GeoWarsGame.GameTime.TotalGameTime.TotalSeconds);
-            spriteBatch.Draw(Image, Position, null, Color, Orientation, Size/2f, scale, 0, 0);
+            var scale = 1 + 0.1f * (float) Math.Sin(10 * GeoWarsGame.GameTime.TotalGameTime.TotalSeconds);
+            spriteBatch.Draw(Image, Position, null, Color, Orientation, Size / 2f, scale, 0, 0);
         }
     }
 }

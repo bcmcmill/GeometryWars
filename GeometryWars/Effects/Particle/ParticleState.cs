@@ -51,16 +51,16 @@ namespace GeometryWars.Effects.Particle
             Vector2.Add(ref particle.Position, ref vel, out particle.Position);
 
             // fade the particle if its PercentLife or speed is low.
-            var alpha = Math.Min(1, Math.Min(particle.PercentLife*2, speed*1f));
+            var alpha = Math.Min(1, Math.Min(particle.PercentLife * 2, speed * 1f));
             alpha *= alpha;
 
-            particle.Tint.A = (byte) (255*alpha);
+            particle.Tint.A = (byte)(255 * alpha);
 
             // the length of bullet particles will be less dependent on their speed than other particles
             if (particle.State.Type == ParticleType.Bullet)
-                particle.Scale.X = particle.State.LengthMultiplier*Math.Min(Math.Min(1f, 0.1f*speed + 0.1f), alpha);
+                particle.Scale.X = particle.State.LengthMultiplier * Math.Min(Math.Min(1f, 0.1f*speed + 0.1f), alpha);
             else
-                particle.Scale.X = particle.State.LengthMultiplier*Math.Min(Math.Min(1f, 0.2f*speed + 0.1f), alpha);
+                particle.Scale.X = particle.State.LengthMultiplier * Math.Min(Math.Min(1f, 0.2f*speed + 0.1f), alpha);
 
             particle.Orientation = vel.ToAngle();
 
@@ -85,11 +85,11 @@ namespace GeometryWars.Effects.Particle
                     var dPos = EntityManager.BlackHoles[i].Position - pos;
                     var distance = dPos.Length();
                     var n = dPos/distance;
-                    vel += 10000*n/(distance*distance + 10000);
+                    vel += 10000 * n / (distance * distance + 10000);
 
                     // add tangential acceleration for nearby particles
                     if (distance < 400)
-                        vel += 45*new Vector2(n.Y, -n.X)/(distance + 100);
+                        vel += 45 * new Vector2(n.Y, -n.X) / (distance + 100);
                 }
             }
 

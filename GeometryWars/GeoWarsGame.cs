@@ -50,7 +50,7 @@ namespace GeometryWars
         {
             base.Initialize();
 
-            ParticleManager = new ParticleManager(1024*25, ParticleState.UpdateParticle);
+            ParticleManager = new ParticleManager(1024 * 25, ParticleState.UpdateParticle);
 
             const int maxGridPoints = 2200;
             var gridSpacing = new Vector2((float) Math.Sqrt(Viewport.Width * Viewport.Height / maxGridPoints));
