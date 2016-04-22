@@ -88,8 +88,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Effects\Bloom\BloomComponent.cs" />
     <Compile Include="Effects\Particle\CircularParticleArray.cs" />
     <Compile Include="Effects\Particle\Particle.cs" />
+    <Compile Include="Entities\World\Grid\Grid.cs" />
     <Compile Include="Entities\World\Grid\PointMass.cs" />
     <Compile Include="Entities\World\Grid\Spring.cs" />
     <Compile Include="Program.cs" />
@@ -99,7 +101,6 @@
     <Compile Include="Utilities\TextureLoader.cs" />
     <Compile Include="Entities\Enemies\EnemySpawner.cs" />
     <Compile Include="Effects\Bloom\BloomSettings.cs" />
-    <Compile Include="Effects\Bloom\BloomComponent.cs" />
     <Compile Include="Utilities\MathUtil.cs" />
     <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Entities\World\BlackHole.cs" />
@@ -108,7 +109,6 @@
     <Compile Include="Entities\Enemies\Enemy.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityManager.cs" />
-    <Compile Include="Entities\World\Grid\Grid.cs" />
     <Compile Include="Utilities\Input.cs" />
     <Compile Include="Effects\Particle\ParticleManager.cs" />
     <Compile Include="Effects\Particle\ParticleState.cs" />
